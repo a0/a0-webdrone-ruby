@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Webdrone do
+  it 'can take a screenshot' do
+    Webdrone.new do |a0|
+      a0.open.url     'http://www.google.com'
+      a0.shot.screen  'home_page'
+    end
+  end
+
   it 'can create a browser with a block and open google' do
     Webdrone.new do |a0|
       a0.open.url   'http://www.google.com'

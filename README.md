@@ -21,22 +21,31 @@ Install it yourself as:
 ## Usage
 
 Create a browser:
+
 ```ruby
 require 'webdrone'
 
 a0 = Webdrone.new
 a0.open.url    'http://www.google.com/'
 a0.quit
+
+# or
+Webdrone.new do |a0|
+  a0.open.url    'http://www.google.com/'
+end
 ```
 
-Or:
+Take a screenshot:
+
 ```ruby
 require 'webdrone'
 
 Webdrone.new do |a0|
   a0.open.url    'http://www.google.com/'
+  a0.shot.name   'start page'
 end
 ```
+
 
 ## Development
 

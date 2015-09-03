@@ -1,6 +1,7 @@
 require 'webdrone/version'
 require 'webdrone/browser'
 require 'webdrone/open'
+require 'webdrone/shot'
 require 'selenium-webdriver'
 
 module Webdrone
