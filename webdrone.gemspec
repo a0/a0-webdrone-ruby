@@ -7,11 +7,11 @@ Gem::Specification.new do |spec|
   spec.name          = "webdrone"
   spec.version       = Webdrone::VERSION
   spec.authors       = ["Aldrin Martoq"]
-  spec.email         = ["aldrin@martoq.cl"]
+  spec.email         = ["a@a0.cl"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{A simpler webdriver, ruby version.}
+  spec.description   = %q{See webpage for more info.}
+  spec.homepage      = "http://github.com/a0/a0-webdrone-ruby"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
