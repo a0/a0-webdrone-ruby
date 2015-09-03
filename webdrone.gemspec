@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Aldrin Martoq"]
   spec.email         = ["a@a0.cl"]
 
-  spec.summary       = %q{A simpler webdriver, ruby version.}
+  spec.summary       = %q{A simple selenium webdriver wrapper, ruby version.}
   spec.description   = %q{See webpage for more info.}
   spec.homepage      = "http://github.com/a0/a0-webdrone-ruby"
   spec.license       = "MIT"
