@@ -5,7 +5,7 @@ module Webdrone
     def initialize(browser: 'chrome')
       @driver = Selenium::WebDriver.for browser.to_sym
     end
-    
+
     def quit
       @driver.quit
     end

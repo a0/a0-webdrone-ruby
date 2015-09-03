@@ -16,13 +16,29 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Install it yourself as:
 
     $ gem install webdrone
 
 ## Usage
 
-TODO: Write usage instructions here
+Create a browser:
+```ruby
+require 'webdrone'
+
+a0 = Webdrone.new
+a0.open.url    'http://www.google.com/'
+a0.quit
+```
+
+Or:
+```ruby
+require 'webdrone'
+
+Webdrone.new do |a0|
+  a0.open.url    'http://www.google.com/'
+end
+```
 
 ## Development
 
@@ -32,7 +48,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/webdrone.
+Bug reports and pull requests are welcome on GitHub at https://github.com/a0/webdrone-ruby.
 
 
 ## License
