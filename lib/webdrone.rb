@@ -1,5 +1,9 @@
-require "webdrone/version"
+require 'webdrone/version'
+require 'webdrone/browser'
+require 'selenium-webdriver'
 
 module Webdrone
-  # Your code goes here...
+  def self.new(*args)
+    a0 = Webdrone::Browser.new *args
+  end
 end

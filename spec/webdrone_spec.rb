@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe Webdrone do
-  it 'has a version number' do
-    expect(Webdrone::VERSION).not_to be nil
+  it 'can create a browser' do
+    a0 = Webdrone.new
+    a0.quit
   end
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+  it 'has a version number' do
+    expect(Webdrone::VERSION).not_to be nil
   end
 end
