@@ -13,7 +13,7 @@ module Webdrone
     end
 
     def id(id, color: 'red')
-      flash color, @a0.find.id(id)
+      flash @a0.find.id(id), color: color
     end
 
     def link(text, color: 'red', n: 1, all: false, visible: true)
