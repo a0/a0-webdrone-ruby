@@ -46,6 +46,12 @@ module Webdrone
       @lastitem.submit
     end
 
+    def xlsx(sheet: nil, filename: nil)
+      @a0.xlsx.dict(sheet: sheet, filename: filename).each do |k, v|
+        self.set k, v
+      end
+    end
+
     protected
       def find_item(key)
         if @xpath
