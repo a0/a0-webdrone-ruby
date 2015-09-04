@@ -30,7 +30,12 @@ module Webdrone
       items = @a0.driver.find_elements :xpath, XPath::HTML.link_or_button(text).to_s
       choose(items, n, all, visible)
     end
-    
+
+    def xpath(text, n: 1, all: false, visible: true)
+      items = @a0.driver.find_elements :xpath, text
+      choose(items, n, all, visible)
+    end
+
     protected
     def choose(list, n, all, visible)
       list = list.select do |x|

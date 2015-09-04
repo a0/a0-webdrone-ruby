@@ -28,6 +28,10 @@ module Webdrone
       flash color, @a0.find.on(text, n: n, all: all, visible: visible)
     end
 
+    def xpath(text, color: 'red', n: 1, all: false, visible: true)
+      flash color, @a0.find.xpath(text, n: n, all: all, visible: visible)
+    end
+
     protected
       def flash(color, item)
         3.times do
