@@ -13,47 +13,48 @@ module Webdrone
     end
 
     def id(id)
-      @a0.driver.find_element :id, id
+      @a0.wait.for do
+        @a0.driver.find_element :id, id
+      end
     end
 
     def link(text, n: 1, all: false, visible: true)
-      items = @a0.driver.find_elements :xpath, XPath::HTML.link(text).to_s
-      choose(items, n, all, visible)
+      self.xpath XPath::HTML.link(text).to_s, n: n, all: all, visible: visible
     end
 
     def button(text, n: 1, all: false, visible: true)
-      items = @a0.driver.find_elements :xpath, XPath::HTML.button(text).to_s
-      choose(items, n, all, visible)
+      self.xpath XPath::HTML.button(text).to_s, n: n, all: all, visible: visible
     end
 
     def on(text, n: 1, all: false, visible: true)
-      items = @a0.driver.find_elements :xpath, XPath::HTML.link_or_button(text).to_s
-      choose(items, n, all, visible)
+      self.xpath XPath::HTML.link_or_button(text).to_s, n: n, all: all, visible: visible
     end
 
     def xpath(text, n: 1, all: false, visible: true)
-      items = @a0.driver.find_elements :xpath, text
-      choose(items, n, all, visible)
+      @a0.wait.for do
+        items = @a0.driver.find_elements :xpath, text
+        choose(items, n, all, visible)
+      end
     end
 
     protected
-    def choose(list, n, all, visible)
-      list = list.select do |x|
-        if visible == true
-          x.displayed?
-        elsif visible == false
-          not x.displayed?
+      def choose(list, n, all, visible)
+        list = list.select do |x|
+          if visible == true
+            x.displayed?
+          elsif visible == false
+            not x.displayed?
+          else
+            true
+          end
+        end
+        if all
+          list
+        elsif n == 1
+          list.first
         else
-          true
+          list[n + 1]
         end
       end
-      if all
-        list
-      elsif n == 1
-        list.first
-      else
-        list[n + 1]
-      end
-    end
   end
 end

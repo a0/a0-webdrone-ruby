@@ -1,0 +1,30 @@
+module Webdrone
+  class Browser
+    def wait
+      @wait ||= Wait.new self
+    end
+  end
+
+  class Wait
+    attr_accessor :a0, :ignore
+
+    def initialize(a0)
+      @a0 = a0
+      @ignore = []
+      @ignore << Selenium::WebDriver::Error::StaleElementReferenceError
+      @ignore << Selenium::WebDriver::Error::NoSuchElementError
+      @ignore << Selenium::WebDriver::Error::NoSuchFrameError
+      @ignore << Selenium::WebDriver::Error::InvalidSelectorError
+    end
+
+    def for
+      Selenium::WebDriver::Wait.new(timeout: @a0.conf.timeout, ignore: @ignore).until do
+        yield
+      end
+    end
+
+    def time(val)
+      sleep val
+    end
+  end
+end
