@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 describe Webdrone do
+  it 'can find a link' do
+    Webdrone.new do |a0|
+      a0.open.url     'http://www.microsoft.com/en-us'
+      expect(a0.find.link('Download Center')).not_to be nil
+      expect(a0.find.link('Download Centers')).to be nil
+    end
+  end
+
   it 'can take a screenshot' do
     Webdrone.new do |a0|
       a0.open.url     'http://www.google.com'

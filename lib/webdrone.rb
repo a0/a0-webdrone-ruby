@@ -2,7 +2,9 @@ require 'webdrone/version'
 require 'webdrone/browser'
 require 'webdrone/open'
 require 'webdrone/shot'
+require 'webdrone/find'
 require 'selenium-webdriver'
+require 'xpath'
 
 module Webdrone
   def self.new(*args)
