@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe Webdrone do
+  it 'can exec javascript' do
+    Webdrone.new do |a0|
+      a0.exec.script    'alert("HELLO");'
+    end
+  end
+
   it 'can find a link and clic on it' do
     Webdrone.new do |a0|
       a0.open.url     'http://www.microsoft.com/en-us'
