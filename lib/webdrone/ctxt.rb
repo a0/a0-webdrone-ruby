@@ -11,6 +11,16 @@ module Webdrone
     def initialize(a0)
       @a0 = a0
     end
+    
+    def create_tab
+      @a0.exec.script "function a0_ctx_create_tab() { var w = window.open(); w.document.open(); w.document.write('A0 CTXT CREATE TAB'); w.document.close(); } a0_ctx_create_tab();"
+      @a0.driver.switch_to.window @a0.driver.window_handles.last
+    end
+    
+    def close_tab
+      @a0.driver.close
+      @a0.driver.switch_to.window @a0.driver.window_handles.last
+    end
 
     def with_frame(name)
       old_frame = @current_frame
