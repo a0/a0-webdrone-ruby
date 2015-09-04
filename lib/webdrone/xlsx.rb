@@ -30,7 +30,7 @@ module Webdrone
       @dict
     end
 
-    def rows(sheet: nil, filename: nil)
+    def rows(sheet: nil, filename: nil, dict: false)
       update_sheet_filename(sheet, filename)
       if @rows == nil
         workbook = RubyXL::Parser.parse(@filename)
@@ -39,6 +39,16 @@ module Webdrone
           row.cells.collect do |cell|
             cell.value if cell != nil
           end
+        end
+      end
+      if dict
+        head = @rows.shift
+        @rows = @rows.collect do |row|
+          dict = {}
+          row.each_with_index do |val, i|
+            dict[head[i]] = val if head[i] != nil
+          end
+          dict
         end
       end
       @rows
