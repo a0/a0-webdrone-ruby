@@ -53,7 +53,7 @@ module Webdrone
         elsif n == 1
           list.first
         else
-          list[n + 1]
+          list[n - 1]
         end
       end
   end
