@@ -30,7 +30,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency "selenium-webdriver"
-  spec.add_development_dependency "xpath"
-  spec.add_development_dependency "rubyXL"
+  spec.add_development_dependency "ci_reporter_rspec"
+  spec.add_development_dependency "parallel_tests"
+  spec.add_runtime_dependency "selenium-webdriver"
+  spec.add_runtime_dependency "xpath"
+  spec.add_runtime_dependency "rubyXL"
 end
