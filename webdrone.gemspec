@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "selenium-webdriver"
   spec.add_development_dependency "xpath"
+  spec.add_development_dependency "rubyXL"
 end

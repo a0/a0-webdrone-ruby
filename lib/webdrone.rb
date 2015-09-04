@@ -7,8 +7,10 @@ require 'webdrone/clic'
 require 'webdrone/exec'
 require 'webdrone/mark'
 require 'webdrone/form'
+require 'webdrone/xlsx'
 require 'selenium-webdriver'
 require 'xpath'
+require 'rubyXL'
 
 module Webdrone
   def self.new(*args)

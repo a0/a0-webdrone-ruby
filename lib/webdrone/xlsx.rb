@@ -1,0 +1,86 @@
+module Webdrone
+  class Browser
+    def xlsx
+      @xlsx ||= Xlsx.new self
+    end
+  end
+
+  class Xlsx
+    attr_accessor :a0, :filename, :sheet, :dict, :rows
+
+    def initialize(a0)
+      @a0 = a0
+      @filename = 'data.xlsx'
+      @sheet = 0
+    end
+
+    def dict(sheet: nil, filename: nil)
+      update_sheet_filename(sheet, filename)
+      if @dict == nil
+        @dict = {}
+        workbook = RubyXL::Parser.parse(@filename)
+        worksheet = workbook[@sheet]
+        worksheet.sheet_data.rows.tap do |head, *body|
+          body.each do |row|
+            k, v = row[0].value, row[1].value
+            @dict[k] = v
+          end
+        end
+      end
+      @dict
+    end
+
+    def rows(sheet: nil, filename: nil)
+      update_sheet_filename(sheet, filename)
+      if @rows == nil
+        workbook = RubyXL::Parser.parse(@filename)
+        worksheet = workbook[@sheet]
+        @rows = worksheet.sheet_data.rows.collect do |row|
+          row.cells.collect do |cell|
+            cell.value if cell != nil
+          end
+        end
+      end
+      @rows
+    end
+
+    def save(sheet: nil, filename: nil, dict: nil, rows: nil)
+      @filename = filename if filename
+      @sheet = sheet if sheet
+      workbook = RubyXL::Parser.parse(@filename)
+      worksheet = workbook[@sheet]
+      if dict != nil
+        worksheet.sheet_data.rows.tap do |head, *body|
+          body.each do |row|
+            k = row[0].value
+            row[1].change_contents(dict[k]) if dict.include?(k)
+          end
+        end
+      elsif rows != nil
+        rows.each_with_index do |row, rowi|
+          row.each_with_index do |data, coli|
+            if worksheet[rowi] == nil || worksheet[rowi][coli] == nil
+              worksheet.add_cell(rowi, coli, data)
+            else
+              worksheet[rowi][coli].change_contents(data)
+            end
+          end
+        end
+      end
+      workbook.write(filename)
+      @dict = @rows = nil
+    end
+
+    protected
+      def update_sheet_filename(sheet, filename)
+        if sheet and sheet != @sheet
+          @sheet = sheet
+          @dict = @rows = nil
+        end
+        if filename and filename != @filename
+          @filename = filename
+          @dict = @rows = nil
+        end
+      end
+  end
+end
