@@ -1,6 +1,6 @@
 # Webdrone
 
-A simple selenium webdriver wrapper, ruby version.
+Yet another selenium webdriver wrapper, ruby version.
 
 ## Installation
 
@@ -45,6 +45,48 @@ Webdrone.new do |a0|
   a0.shot.name   'start page'
 end
 ```
+
+Filling a form:
+
+```ruby
+require 'webdrone'
+
+Webdrone.new do |a0|
+  a0.open.url    'http://www.google.com/'
+  a0.form.set    'q', 'A0::WebDrone'
+  a0.form.submit
+end
+
+# or
+a0.open.url    'http://www.google.com/'
+a0.form.with_xpath '//label[contains(.,"%s")]/following-sibling::*/*[self::input | self::textarea | self::select]' do
+  set   'label', 'value'
+  xlsx  sheet: 'ejemplo'
+end
+a0.form.submit
+```
+
+Config:
+
+```ruby
+a0.conf.timeout   10
+```
+
+Context, text and verification:
+
+```ruby
+a0.ctxt.create_tab
+a0.open.url     'http:://example.com/'
+a0.ctxt.with_frame 'iframe_name' do 
+  a0.find.on  'Some link or button'
+end
+puts  a0.text.id('something')
+
+a0.vrfy.id    'another', contains: 'SOME TEXT'
+a0.vrfy.id    'another', eq: 'EXACT TEXT'
+a0.vrfy.link  'link', attr: 'disabled', eq: 'true'
+```
+
 
 
 ## Development
