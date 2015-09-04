@@ -5,6 +5,7 @@ require 'webdrone/shot'
 require 'webdrone/find'
 require 'webdrone/clic'
 require 'webdrone/exec'
+require 'webdrone/mark'
 require 'selenium-webdriver'
 require 'xpath'
 

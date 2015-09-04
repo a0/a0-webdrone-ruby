@@ -13,6 +13,7 @@ describe Webdrone do
       expect(a0.find.link('Download Center')).not_to be nil
       expect(a0.find.link('Download Centers')).to be nil
       a0.clic.link 'Download Center'
+      a0.mark.on 'Buy now', all: true
       a0.shot.screen 'download'
     end
   end
