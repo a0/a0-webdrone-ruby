@@ -18,7 +18,7 @@ require 'xpath'
 require 'rubyXL'
 
 module Webdrone
-  def self.new(*args)
+  def self.create(*args)
     a0 = Webdrone::Browser.new *args
     if block_given?
       begin

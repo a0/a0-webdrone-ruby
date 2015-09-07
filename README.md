@@ -25,12 +25,12 @@ Create a browser:
 ```ruby
 require 'webdrone'
 
-a0 = Webdrone.new
+a0 = Webdrone.create
 a0.open.url    'http://www.google.com/'
 a0.quit
 
 # or
-Webdrone.new do |a0|
+Webdrone.create do |a0|
   a0.open.url    'http://www.google.com/'
 end
 ```
@@ -40,7 +40,7 @@ Take a screenshot:
 ```ruby
 require 'webdrone'
 
-Webdrone.new do |a0|
+Webdrone.create do |a0|
   a0.open.url    'http://www.google.com/'
   a0.shot.name   'start page'
 end
@@ -51,7 +51,7 @@ Filling a form:
 ```ruby
 require 'webdrone'
 
-Webdrone.new do |a0|
+Webdrone.create do |a0|
   a0.open.url    'http://www.google.com/'
   a0.form.set    'q', 'A0::WebDrone'
   a0.form.submit
