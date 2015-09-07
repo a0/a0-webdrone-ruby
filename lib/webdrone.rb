@@ -32,9 +32,9 @@ module Webdrone
     end
   end
 
-  def self.irb_console(*args)
+  def self.irb_console(binding)
     return if IRB.CurrentContext
-    IRB.start_session(Kernel.binding)
+    IRB.start_session(binding)
   end
 end
 
