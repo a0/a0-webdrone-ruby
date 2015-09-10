@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(id)
-      @a0.find.id(id).click
+    def id(text)
+      @a0.find.id(text).click
     end
 
     def link(text, n: 1, all: false, visible: true)

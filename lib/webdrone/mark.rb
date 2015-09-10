@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(id, color: 'red')
-      flash @a0.find.id(id), color: color
+    def id(text, color: 'red')
+      flash @a0.find.id(text), color: color
     end
 
     def link(text, color: 'red', n: 1, all: false, visible: true)
@@ -38,18 +38,18 @@ module Webdrone
 
     def flash(item, color: 'red')
       3.times do
-        border 'white', item
+        border item, 'white'
         sleep 0.1
-        border 'blue', item
+        border item, 'blue'
         sleep 0.1
-        border color, item
+        border item, color
         sleep 0.1
       end
       item
     end
 
     protected
-      def border(color, item)
+      def border(item, color)
         if item.is_a? Array
           item.each do |item|
             @a0.exec.script("arguments[0].style.border = '2px solid #{color}'", item)

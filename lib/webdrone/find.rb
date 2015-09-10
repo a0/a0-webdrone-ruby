@@ -12,9 +12,9 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(id)
+    def id(text)
       @a0.wait.for do
-        @a0.driver.find_element :id, id
+        @a0.driver.find_element :id, text
       end
     end
 

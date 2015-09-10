@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(id)
-      @a0.find.id(id).text
+    def id(text)
+      @a0.find.id(text).text
     end
 
     def link(text, n: 1, all: false, visible: true)
@@ -26,6 +26,10 @@ module Webdrone
 
     def on(text, n: 1, all: false, visible: true)
       @a0.find.on(text, n: n, all: all, visible: visible).text
+    end
+
+    def option(text, n: 1, all: false, visible: true)
+      @a0.find.option(text, n: n, all: all, visible: visible).text
     end
 
     def xpath(text, n: 1, all: false, visible: true)

@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(id, attr: nil, eq: nil, contains: nil)
-      vrfy @a0.find.id(id), attr: attr, eq: eq, contains: contains
+    def id(text, attr: nil, eq: nil, contains: nil)
+      vrfy @a0.find.id(text), attr: attr, eq: eq, contains: contains
     end
 
     def link(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
@@ -26,6 +26,10 @@ module Webdrone
 
     def on(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.on(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
+    end
+
+    def option(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
+      vrfy @a0.find.option(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
     end
 
     def xpath(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
