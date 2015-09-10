@@ -28,6 +28,10 @@ module Webdrone
       @a0.find.on(text, n: n, all: all, visible: visible).click
     end
 
+    def option(text, n: 1, all: false, visible: true)
+      @a0.find.option(text, n: n, all: all, visible: visible).click
+    end
+
     def xpath(text, n: 1, all: false, visible: true)
       @a0.find.xpath(text, n: n, all: all, visible: visible).click
     end

@@ -30,6 +30,10 @@ module Webdrone
       self.xpath XPath::HTML.link_or_button(text).to_s, n: n, all: all, visible: visible
     end
 
+    def option(text, n: 1, all: false, visible: true)
+      self.xpath XPath::HTML.option(text).to_s, n: n, all: all, visible: visible
+    end
+
     def xpath(text, n: 1, all: false, visible: true)
       @a0.wait.for do
         items = @a0.driver.find_elements :xpath, text
