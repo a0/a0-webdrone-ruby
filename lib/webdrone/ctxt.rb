@@ -28,7 +28,7 @@ module Webdrone
       @current_frame = name
       if block_given?
         yield
-        @a0.driver.switch_to.parent_frame
+        @a0.driver.switch_to.frame old_frame
         @current_frame = old_frame
       end
       @current_frame
