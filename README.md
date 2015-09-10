@@ -26,42 +26,33 @@ Create a browser:
 require 'webdrone'
 
 a0 = Webdrone.create
-a0.open.url    'http://www.google.com/'
+a0.open.url         'http://www.google.com/'
 a0.quit
 
 # or
 Webdrone.create do |a0|
-  a0.open.url    'http://www.google.com/'
+  a0.open.url       'http://www.google.com/'
 end
 ```
 
 Take a screenshot:
 
 ```ruby
-require 'webdrone'
-
-Webdrone.create do |a0|
-  a0.open.url    'http://www.google.com/'
-  a0.shot.name   'start page'
-end
+a0.shot.name        'login'        # saves to screenshot-0001-login.png
+a0.shot.name        'home'         # saves to screenshot-0002-home.png
 ```
 
 Filling a form:
 
 ```ruby
-require 'webdrone'
-
-Webdrone.create do |a0|
-  a0.open.url    'http://www.google.com/'
-  a0.form.set    'q', 'A0::WebDrone'
-  a0.form.submit
+a0.form.set         'q', 'A0::WebDrone'
+a0.form.submit
 end
 
 # or
-a0.open.url    'http://www.google.com/'
 a0.form.with_xpath '//label[contains(.,"%s")]/following-sibling::*/*[self::input | self::textarea | self::select]' do
-  set   'label', 'value'
-  xlsx  sheet: 'ejemplo'
+  set               'label', 'value'
+  xlsx              sheet: 'ejemplo'
 end
 a0.form.submit
 ```
