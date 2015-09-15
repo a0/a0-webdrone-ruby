@@ -2,6 +2,8 @@
 
 Yet another selenium webdriver wrapper, ruby version.
 
+There is a groovy version available, at https://github.com/a0/a0-webdrone-groovy.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -88,7 +90,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/a0/webdrone-ruby.
+Bug reports and pull requests are welcome on GitHub at https://github.com/a0/a0-webdrone-ruby.
 
 
 ## License
