@@ -17,6 +17,7 @@ require 'selenium-webdriver'
 require 'xpath'
 require 'rubyXL'
 require 'irb'
+require 'fileutils'
 
 module Webdrone
   def self.create(*args)
@@ -26,7 +27,7 @@ module Webdrone
         yield a0
       ensure
         a0.quit
-      end    
+      end
     else
       a0
     end

@@ -15,6 +15,7 @@ module Webdrone
     def screen(name)
       @counter = (@counter || 0) + 1
       filename = sprintf "screenshot-%04d-%s.png", @counter, name
+      filename = File.join(@a0.conf.outdir, filename)
       @a0.driver.save_screenshot filename
     end
   end

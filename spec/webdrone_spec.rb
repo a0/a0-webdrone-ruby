@@ -1,6 +1,15 @@
 require 'spec_helper'
 
 describe Webdrone do
+  it 'can create an output directory' do
+    a0 = Webdrone.create create_outdir: true do |a0|
+      a0.open.url     'http://www.google.cl/'
+      a0.form.set     'q', "Download sample file filetype:xls\n"
+      a0.shot.screen  'homepage'      # screenshot is saved in output directory
+      a0.clic.xpath   '//h3'          # xls file is saved in output directory
+    end
+  end
+
   it 'can exec javascript' do
     Webdrone.create do |a0|
       a0.exec.script    'alert("HELLO");'
