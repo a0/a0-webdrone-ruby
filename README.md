@@ -44,7 +44,7 @@ a0.shot.name        'login'        # saves to screenshot-0001-login.png
 a0.shot.name        'home'         # saves to screenshot-0002-home.png
 ```
 
-Filling a form:
+Working with forms:
 
 ```ruby
 a0.form.set         'q', 'A0::WebDrone'
@@ -59,13 +59,38 @@ end
 a0.form.submit
 ```
 
+Filling a form from an xlsx spreadsheet:
+```ruby
+a0.conf.timeout   10
+```
+
+
+
 Config:
 
 ```ruby
 a0.conf.timeout   10
 ```
 
-Context, text and verification:
+Saving screenshots and downloaded files to a directory:
+
+```ruby
+a0 = Webdrone.create create_outdir: true
+print a0.conf.outdir            # <= default is webdrone_output_%date%_%time%
+
+a0.open.url     'http://www.google.cl/'
+a0.form.set     'q', "Download sample file filetype:xls\n"
+a0.shot.screen  'homepage'      # screenshot is saved in output directory
+a0.clic.xpath   '//h3'          # xls file is saved in output directory
+
+# or specify directory yourself
+a0 = Webdrone.create outdir: '/tmp/evidences'
+print a0.conf.outdir            # <= "/tmp/evidences"
+```
+
+
+
+Creating tabs and switching iframes:
 
 ```ruby
 a0.ctxt.create_tab
@@ -73,11 +98,22 @@ a0.open.url     'http:://example.com/'
 a0.ctxt.with_frame 'iframe_name' do 
   a0.find.on  'Some link or button'
 end
-puts  a0.text.id('something')
+```
 
-a0.vrfy.id    'another', contains: 'SOME TEXT'
-a0.vrfy.id    'another', eq: 'EXACT TEXT'
+Getting text:
+
+```ruby
+puts  a0.text.id        'some_id'
+puts  a0.text.xpath     'some_xpath'
+```
+
+Verifying text and HTML attributes
+
+```ruby
+a0.vrfy.id    'some_id', contains: 'SOME TEXT'
+a0.vrfy.xpath 'some_xpath', eq: 'EXACT TEXT'
 a0.vrfy.link  'link', attr: 'disabled', eq: 'true'
+a0.vrfy.link  'link', attr: 'sample', contains: 'something'
 ```
 
 
