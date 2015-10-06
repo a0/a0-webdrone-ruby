@@ -1,6 +1,47 @@
 require 'spec_helper'
 
 describe Webdrone do
+  it 'can update form from xlsx' do
+    filename = File.join(File.dirname(__FILE__), 'data.xlsx')
+    a0 = Webdrone.create create_outdir: true do |a0|
+      a0.open.url 'http://getbootstrap.com/css/?#forms'
+      a0.form.with_xpath '//label[contains(.,"%s")]/following-sibling::*[1][self::input | self::textarea | self::select]' do
+        xlsx sheet: 'sample data', filename: filename
+      end
+      a0.shot.screen 'ya'
+    end
+  end
+
+  it 'can read and write an xlsx' do
+    filename = File.join(File.dirname(__FILE__), 'data.xlsx')
+    FileUtils.cp(filename, Dir.tmpdir())
+    filename = File.join(Dir.tmpdir(), 'data.xlsx')
+    puts "output: #{filename}"
+    a0 = Webdrone.create create_outdir: true do |a0|
+      dict = a0.xlsx.dict filename: filename
+      puts "dict: #{dict}"
+      dict['name'] = "#{dict['name']} d"
+      a0.xlsx.save
+      dict = a0.xlsx.dict filename: filename
+      puts "dict: #{dict}"
+
+      rows = a0.xlsx.rows filename: filename
+      puts "rows: #{rows}"
+      rows[1][1] = "#{rows[1][1]} r"
+      a0.xlsx.save
+      rows = a0.xlsx.rows filename: filename
+      puts "rows: #{rows}"
+
+      both = a0.xlsx.both filename: filename
+      puts "both: #{both}"
+      puts "both: #{both[1]}"
+      both[1]['VALUE'] = "#{both[1]['VALUE']} rd"
+      a0.xlsx.save
+      both = a0.xlsx.both filename: filename
+      puts "both: #{both}"
+    end
+  end
+
   it 'can create an output directory' do
     a0 = Webdrone.create create_outdir: true do |a0|
       a0.open.url     'http://www.google.cl/'

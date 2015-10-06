@@ -6,7 +6,7 @@ module Webdrone
   end
 
   class Xlsx
-    attr_accessor :a0, :filename, :sheet, :dict, :rows
+    attr_accessor :a0, :filename, :sheet, :dict, :rows, :both
 
     def initialize(a0)
       @a0 = a0
@@ -17,6 +17,7 @@ module Webdrone
     def dict(sheet: nil, filename: nil)
       update_sheet_filename(sheet, filename)
       if @dict == nil
+        reset
         @dict = {}
         workbook = RubyXL::Parser.parse(@filename)
         worksheet = workbook[@sheet]
@@ -30,9 +31,10 @@ module Webdrone
       @dict
     end
 
-    def rows(sheet: nil, filename: nil, dict: false)
+    def rows(sheet: nil, filename: nil)
       update_sheet_filename(sheet, filename)
       if @rows == nil
+        reset
         workbook = RubyXL::Parser.parse(@filename)
         worksheet = workbook[@sheet]
         @rows = worksheet.sheet_data.rows.collect do |row|
@@ -41,9 +43,22 @@ module Webdrone
           end
         end
       end
-      if dict
-        head = @rows.shift
-        @rows = @rows.collect do |row|
+      @rows
+    end
+
+    def both(sheet: nil, filename: nil)
+      update_sheet_filename(sheet, filename)
+      if @both == nil
+        reset
+        workbook = RubyXL::Parser.parse(@filename)
+        worksheet = workbook[@sheet]
+        rows = worksheet.sheet_data.rows.collect do |row|
+          row.cells.collect do |cell|
+            cell.value if cell != nil
+          end
+        end
+        head = rows.shift
+        @both = rows.collect do |row|
           dict = {}
           row.each_with_index do |val, i|
             dict[head[i]] = val if head[i] != nil
@@ -51,23 +66,26 @@ module Webdrone
           dict
         end
       end
-      @rows
+      @both
     end
+
 
     def save(sheet: nil, filename: nil, dict: nil, rows: nil)
       @filename = filename if filename
       @sheet = sheet if sheet
       workbook = RubyXL::Parser.parse(@filename)
       worksheet = workbook[@sheet]
-      if dict != nil
+      if @dict != nil
         worksheet.sheet_data.rows.tap do |head, *body|
           body.each do |row|
             k = row[0].value
-            row[1].change_contents(dict[k]) if dict.include?(k)
+            if @dict.include?(k)
+              row[1].change_contents(@dict[k])
+            end
           end
         end
-      elsif rows != nil
-        rows.each_with_index do |row, rowi|
+      elsif @rows != nil
+        @rows.each_with_index do |row, rowi|
           row.each_with_index do |data, coli|
             if worksheet[rowi] == nil || worksheet[rowi][coli] == nil
               worksheet.add_cell(rowi, coli, data)
@@ -76,20 +94,37 @@ module Webdrone
             end
           end
         end
+      elsif @both != nil
+        rows = worksheet.sheet_data.rows.collect do |row|
+          row.cells.collect do |cell|
+            cell.value if cell != nil
+          end
+        end
+        head = rows.shift
+        @both.each_with_index do |entry, i|
+          entry.each do |k, v|
+            index = head.index(k)
+            worksheet[i + 1][index].change_contents(v) if index
+          end
+        end
       end
-      workbook.write(filename)
-      @dict = @rows = nil
+      k = workbook.write(@filename)
+      reset
+    end
+
+    def reset()
+      @dict = @rows = @both = nil
     end
 
     protected
       def update_sheet_filename(sheet, filename)
         if sheet and sheet != @sheet
           @sheet = sheet
-          @dict = @rows = nil
+          reset
         end
         if filename and filename != @filename
           @filename = filename
-          @dict = @rows = nil
+          reset
         end
       end
   end
