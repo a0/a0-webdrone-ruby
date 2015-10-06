@@ -34,7 +34,6 @@ describe Webdrone do
 
       both = a0.xlsx.both filename: filename
       puts "both: #{both}"
-      puts "both: #{both[1]}"
       both[1]['VALUE'] = "#{both[1]['VALUE']} rd"
       a0.xlsx.save
       both = a0.xlsx.both filename: filename
@@ -44,10 +43,13 @@ describe Webdrone do
 
   it 'can create an output directory' do
     a0 = Webdrone.create create_outdir: true do |a0|
+      a0.conf.timeout = 10
       a0.open.url     'http://www.google.cl/'
-      a0.form.set     'q', "Download sample file filetype:xls\n"
       a0.shot.screen  'homepage'      # screenshot is saved in output directory
+      a0.form.set     'q', "Download sample file filetype:xls\n"
+      a0.wait.time    5
       a0.clic.xpath   '//h3'          # xls file is saved in output directory
+      a0.wait.time    5
     end
   end
 
