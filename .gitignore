@@ -7,3 +7,5 @@
 /pkg/
 /spec/reports/
 /tmp/
+webdrone_output_*
+screenshot-*.png
