@@ -18,6 +18,13 @@ module Webdrone
       end
     end
 
+    def css(text, n: 1, all: false, visible: true)
+      @a0.wait.for do
+        items = @a0.driver.find_elements :css, text
+        choose(items, n, all, visible)
+      end
+    end
+
     def link(text, n: 1, all: false, visible: true)
       self.xpath XPath::HTML.link(text).to_s, n: n, all: all, visible: visible
     end

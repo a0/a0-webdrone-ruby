@@ -16,6 +16,10 @@ module Webdrone
       flash @a0.find.id(text), color: color
     end
 
+    def css(text, color: 'red', n: 1, all: false, visible: true)
+      flash @a0.find.css(text, n: n, all: all, visible: visible), color: color
+    end
+
     def link(text, color: 'red', n: 1, all: false, visible: true)
       flash @a0.find.link(text, n: n, all: all, visible: visible), color: color
     end

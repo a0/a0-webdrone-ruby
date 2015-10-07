@@ -16,6 +16,10 @@ module Webdrone
       @a0.find.id(text).click
     end
 
+    def css(text)
+      @a0.find.css(text).click
+    end
+
     def link(text, n: 1, all: false, visible: true)
       @a0.find.link(text, n: n, all: all, visible: visible).click
     end

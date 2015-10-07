@@ -16,6 +16,10 @@ module Webdrone
       vrfy @a0.find.id(text), attr: attr, eq: eq, contains: contains
     end
 
+    def css(text, attr: nil, eq: nil, contains: nil)
+      vrfy @a0.find.css(text), attr: attr, eq: eq, contains: contains
+    end
+
     def link(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.link(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
     end
@@ -35,7 +39,7 @@ module Webdrone
     def xpath(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.xpath(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
     end
-    
+
     def vrfy(item, attr: nil, eq: nil, contains: nil)
       if attr != nil
         r = item.attribute(attr) == eq if eq != nil
