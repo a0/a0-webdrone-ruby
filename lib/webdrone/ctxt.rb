@@ -10,6 +10,7 @@ module Webdrone
 
     def initialize(a0)
       @a0 = a0
+      @framestack = []
     end
     
     def create_tab
@@ -23,15 +24,15 @@ module Webdrone
     end
 
     def with_frame(name)
-      old_frame = @current_frame
+      @framestack << name      
       @a0.driver.switch_to.frame name
-      @current_frame = name
       if block_given?
         yield
-        @a0.driver.switch_to.frame old_frame
-        @current_frame = old_frame
+        @framestack.pop
+        @a0.driver.switch_to.default_content
+        @framestack.each { |frame| @a0.driver.switch_to.frame frame}
       end
-      @current_frame
+      name
     end
     
     def with_alert
