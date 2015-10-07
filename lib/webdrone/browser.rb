@@ -4,7 +4,7 @@ module Webdrone
 
     def initialize(browser: 'chrome', create_outdir: false, outdir: nil)
       if create_outdir or outdir
-        outdir ||= "webdrone_output_#{Time.new.strftime('%Y%m%d_%H%M')}"
+        outdir ||= "webdrone_output/#{Time.new.strftime('%Y%m%d_%H%M')}"
         self.conf.outdir = outdir
       end
       if outdir != nil and browser.to_sym == :chrome
