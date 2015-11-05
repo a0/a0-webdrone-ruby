@@ -12,6 +12,7 @@ module Webdrone
         @driver = Selenium::WebDriver.for browser.to_sym, prefs: prefs
       elsif outdir != nil and browser.to_sym == :firefox
         profile = Selenium::WebDriver::Firefox::Profile.new
+        profile['startup.homepage_welcome_url.additional'] = 'about:blank'
         profile['browser.download.dir'] = outdir
         profile['browser.download.folderList'] = 2
         profile['browser.download.manager.showWhenStarting'] = false
