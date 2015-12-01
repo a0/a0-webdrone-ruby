@@ -39,5 +39,9 @@ module Webdrone
     def xpath(text, n: 1, all: false, visible: true)
       @a0.find.xpath(text, n: n, all: all, visible: visible).text
     end
+    
+    def page_title
+      @a0.driver.title
+    end
   end
 end
