@@ -18,6 +18,7 @@ require 'xpath'
 require 'rubyXL'
 require 'irb'
 require 'fileutils'
+require 'binding_of_caller'
 
 module Webdrone
   def self.create(*args)
@@ -33,8 +34,9 @@ module Webdrone
     end
   end
 
-  def self.irb_console(binding)
+  def self.irb_console(binding = nil)
     return if IRB.CurrentContext
+    binding = Kernel.binding.of_caller(1) if binding == nil
     IRB.start_session(binding)
   end
 end

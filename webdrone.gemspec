@@ -35,4 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "selenium-webdriver"
   spec.add_runtime_dependency "xpath"
   spec.add_runtime_dependency "rubyXL"
+  spec.add_runtime_dependency "binding_of_caller"
 end
