@@ -27,12 +27,20 @@ module Webdrone
       @framestack << name      
       @a0.driver.switch_to.frame name
       if block_given?
-        yield
-        @framestack.pop
-        @a0.driver.switch_to.default_content
-        @framestack.each { |frame| @a0.driver.switch_to.frame frame}
+        begin
+          yield
+        ensure
+          @framestack.pop
+          @a0.driver.switch_to.default_content
+          @framestack.each { |frame| @a0.driver.switch_to.frame frame}
+        end
       end
       name
+    end
+    
+    def reset
+      @a0.driver.switch_to.default_content
+      @ramestack = []
     end
     
     def with_alert
