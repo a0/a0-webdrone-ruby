@@ -21,7 +21,6 @@ module Webdrone
       item = self.find_item(key)
       if item.tag_name == 'select'
         option = item.find_element :xpath, XPath::HTML.option(val).to_s
-        item.click
         option.click
       else
         item.clear
