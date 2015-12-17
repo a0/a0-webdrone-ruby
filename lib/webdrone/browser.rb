@@ -38,7 +38,6 @@ module Webdrone
       elsif outdir != nil and browser.to_sym == :firefox
         firefox_profile = Browser.firefox_profile if firefox_profile == nil
         firefox_profile['browser.download.dir'] = outdir
-        puts "FIREFOX PROFILE:#{firefox_profile} outdir: #{outdir}"
         @driver = Selenium::WebDriver.for browser.to_sym, profile: firefox_profile
       else
         @driver = Selenium::WebDriver.for browser.to_sym
