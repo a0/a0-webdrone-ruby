@@ -19,6 +19,7 @@ require 'rubyXL'
 require 'irb'
 require 'fileutils'
 require 'binding_of_caller'
+require 'pathname'
 
 module Webdrone
   def self.create(*args)
