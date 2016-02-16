@@ -27,12 +27,12 @@ Create a browser:
 ```ruby
 require 'webdrone'
 
-a0 = Webdrone.create
+a0 = Webdrone.create timeout: 5
 a0.open.url         'http://www.google.com/'
 a0.quit
 
 # or
-Webdrone.create do |a0|
+Webdrone.create timeout: 5 do |a0|
   a0.open.url       'http://www.google.com/'
 end
 ```
@@ -40,16 +40,20 @@ end
 Take a screenshot:
 
 ```ruby
-a0.shot.name        'login'        # saves to screenshot-0001-login.png
-a0.shot.name        'home'         # saves to screenshot-0002-home.png
+a0.shot.screen        'login'        # saves to screenshot-0001-login.png
+a0.shot.screen        'home'         # saves to screenshot-0002-home.png
 ```
 
 Working with forms:
 
 ```ruby
-a0.form.set         'q', 'A0::WebDrone'
-a0.form.submit
+
+Webdrone.create do |a0|
+  a0.open.url       'http://www.google.com/'
+  a0.form.set         'q', 'A0::WebDrone'
+  a0.form.submit
 end
+
 
 # or
 a0.form.with_xpath '//label[contains(.,"%s")]/following-sibling::*/*[self::input | self::textarea | self::select]' do
@@ -61,7 +65,7 @@ a0.form.submit
 
 Filling a form from an xlsx spreadsheet:
 ```ruby
-a0.conf.timeout   10
+TODO
 ```
 
 
@@ -69,7 +73,7 @@ a0.conf.timeout   10
 Config:
 
 ```ruby
-a0.conf.timeout   10
+TODO
 ```
 
 Saving screenshots and downloaded files to a directory:
