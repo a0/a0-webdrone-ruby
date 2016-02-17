@@ -3,23 +3,26 @@ module Webdrone
     attr_reader :original, :a0, :caller_locations
     def initialize(msg, original = $!, a0, caller_locations)
       super(msg)
-      @original = original;
+      @original = original
       @a0 = a0
       @caller_locations = caller_locations
       @buffer = []
 
-      # find location of user error
-      @caller_locations[1..-1].each do |location|
-        if not location.path.include? 'lib/webdrone/'
-          @location = location
-          break
+      begin
+        # find location of user error
+        @caller_locations[1..-1].each do |location|
+          if not location.path.include? 'lib/webdrone/'
+            @location = location
+            break
+          end
         end
-      end      
 
-      report_script
-      report_screenshot
-      report_exception
-      report_time
+        report_script
+        report_screenshot
+        report_exception
+        report_time
+      rescue
+      end
     end
 
     def write_line(line)
