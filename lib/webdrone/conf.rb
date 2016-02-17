@@ -16,11 +16,15 @@ module Webdrone
     def timeout=(val)
       @timeout = val
       @a0.driver.manage.timeouts.implicit_wait = val
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def outdir=(val)
       @outdir = val
       FileUtils.mkdir_p val
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
   end
 end

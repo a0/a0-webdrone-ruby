@@ -1,4 +1,5 @@
 require 'webdrone/version'
+require 'webdrone/error'
 require 'webdrone/browser'
 require 'webdrone/open'
 require 'webdrone/shot'

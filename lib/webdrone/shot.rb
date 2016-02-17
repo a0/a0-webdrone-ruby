@@ -17,6 +17,8 @@ module Webdrone
       filename = sprintf "screenshot-%04d-%s.png", @counter, name
       filename = File.join(@a0.conf.outdir, filename)
       @a0.driver.save_screenshot filename
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
   end
 end

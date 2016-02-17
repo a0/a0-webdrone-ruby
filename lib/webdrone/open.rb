@@ -14,6 +14,8 @@ module Webdrone
 
     def url(url)
       @a0.driver.get url
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
   end
 end

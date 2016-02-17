@@ -25,10 +25,14 @@ module Webdrone
       else
         yield
       end
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def time(val)
       sleep val
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
   end
 end

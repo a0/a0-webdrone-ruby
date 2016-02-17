@@ -15,6 +15,8 @@ module Webdrone
     def with_xpath(xpath, &block)
       @xpath = xpath
       instance_eval &block
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def set(key, val)
@@ -26,29 +28,41 @@ module Webdrone
         item.clear
         item.send_keys(val)
       end
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def get(key)
       self.find_item(key)[:value]
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def clic(key)
       self.find_item(key).click
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def mark(key, color: 'red')
       @a0.mark.flash self.find_item(key), color: color
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def submit(key = nil)
       self.find_item(key) if key
       @lastitem.submit
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def xlsx(sheet: nil, filename: nil)
       @a0.xlsx.dict(sheet: sheet, filename: filename).each do |k, v|
         self.set k, v
       end
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     protected

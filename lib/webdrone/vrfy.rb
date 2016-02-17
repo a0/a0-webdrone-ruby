@@ -14,30 +14,44 @@ module Webdrone
 
     def id(text, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.id(text), attr: attr, eq: eq, contains: contains
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def css(text, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.css(text), attr: attr, eq: eq, contains: contains
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def link(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.link(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def button(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.button(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def on(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.on(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def option(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.option(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def xpath(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.xpath(text, n: n, visible: visible), attr: attr, eq: eq, contains: contains
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
     def vrfy(item, attr: nil, eq: nil, contains: nil)

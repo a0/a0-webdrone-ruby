@@ -14,6 +14,8 @@ module Webdrone
 
     def script(script, *more)
       @a0.driver.execute_script(script, *more)
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
   end
 end
