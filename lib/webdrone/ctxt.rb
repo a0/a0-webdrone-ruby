@@ -64,5 +64,22 @@ module Webdrone
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
+
+    def with_conf(new_config)
+      current_config = {}
+
+      new_config.each do |k, v|
+        current_config[k] = @a0.conf.send k
+        @a0.conf.send "#{k}=", v
+      end
+
+      yield
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+    ensure
+      current_config.each do |k, v|
+        @a0.conf.send "#{k}=", v
+      end
+    end
   end
 end
