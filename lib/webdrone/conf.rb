@@ -6,11 +6,12 @@ module Webdrone
   end
 
   class Conf
-    attr_accessor :a0, :timeout, :outdir
+    attr_accessor :a0, :timeout, :outdir, :error
 
     def initialize(a0)
       @a0 = a0
       @outdir = "."
+      @error = :raise_report
     end
 
     def timeout=(val)
@@ -23,6 +24,13 @@ module Webdrone
     def outdir=(val)
       @outdir = val
       FileUtils.mkdir_p val
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+    end
+
+    def error=(val)
+      raise "Invalid value '#{val}' for error" if not [:raise_report, :raise, :ignore].include? val
+      @error = val
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end

@@ -10,17 +10,14 @@ module Webdrone
 
       begin
         # find location of user error
-        @caller_locations[1..-1].each do |location|
-          if not location.path.include? 'lib/webdrone/'
+        @caller_locations[0..-1].each do |location|
+          if Gem.path.none? { |path| location.path.include? path }
             @location = location
             break
           end
         end
 
-        report_script
-        report_screenshot
-        report_exception
-        report_time
+        report if a0.conf.error == :raise_report
       rescue
       end
     end
@@ -45,6 +42,13 @@ module Webdrone
         file.write(@buffer.join)
       end
       @buffer = []
+    end
+
+    def report
+      report_script
+      report_screenshot
+      report_exception
+      report_time
     end
 
     def report_script
@@ -104,10 +108,8 @@ module Webdrone
   end
 
   def self.report_error(a0, exception, caller_locations)
-    if exception.class == WebdroneError
-      raise exception
-    end
-
-    raise WebdroneError.new(exception.message, exception, a0, caller_locations)
+    exception = WebdroneError.new(exception.message, exception, a0, caller_locations) if exception.class != WebdroneError
+    
+    raise exception if a0.conf.error == :raise or a0.conf.error == :raise_report
   end
 end
