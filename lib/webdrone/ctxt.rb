@@ -46,7 +46,7 @@ module Webdrone
     
     def reset
       @a0.driver.switch_to.default_content
-      @ramestack = []
+      @framestack = []
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
