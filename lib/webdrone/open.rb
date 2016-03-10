@@ -17,5 +17,11 @@ module Webdrone
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
+
+    def reload
+      @a0.driver.navigate.refresh
+    rescue => exception
+      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+    end
   end
 end
