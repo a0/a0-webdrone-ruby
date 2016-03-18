@@ -28,6 +28,8 @@ module Webdrone
     if block_given?
       begin
         yield a0
+      rescue => exception
+        Webdrone.report_error(a0, exception, Kernel.caller_locations)
       ensure
         a0.quit
       end
