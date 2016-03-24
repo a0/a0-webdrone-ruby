@@ -57,11 +57,11 @@ module Webdrone
     def flash(item, color: 'red')
       3.times do
         border item, 'white'
-        sleep 0.1
-        border item, 'blue'
-        sleep 0.1
+        sleep 0.05
+        border item, 'black'
+        sleep 0.05
         border item, color
-        sleep 0.1
+        sleep 0.05
       end
       item
     end
