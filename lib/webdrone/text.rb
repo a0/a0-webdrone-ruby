@@ -12,53 +12,31 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text, n: 1, all: false, visible: true)
-      @a0.find.send __method__, text
-      @a0.find.id(text).text
+    def find_text(text, n: 1, all: false, visible: true)
+      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
+      if item.is_a? Array
+        item.collect(&:text)
+      else
+        item.text
+      end
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def css(text, n: 1, all: false, visible: true)
-      @a0.find.css(text).text
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def link(text, n: 1, all: false, visible: true)
-      @a0.find.link(text, n: n, all: all, visible: visible).text
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def button(text, n: 1, all: false, visible: true)
-      @a0.find.button(text, n: n, all: all, visible: visible).text
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def on(text, n: 1, all: false, visible: true)
-      @a0.find.on(text, n: n, all: all, visible: visible).text
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def option(text, n: 1, all: false, visible: true)
-      @a0.find.option(text, n: n, all: all, visible: visible).text
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def xpath(text, n: 1, all: false, visible: true)
-      @a0.find.xpath(text, n: n, all: all, visible: visible).text
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
+    alias_method :id,     :find_text
+    alias_method :css,    :find_text
+    alias_method :link,   :find_text
+    alias_method :button, :find_text
+    alias_method :on,     :find_text
+    alias_method :option, :find_text
+    alias_method :xpath,  :find_text
     
     def page_title
       @a0.driver.title
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
+
+    protected :find_text
   end
 end
