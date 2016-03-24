@@ -16,9 +16,13 @@ And then execute:
 
     $ bundle
 
-Install it yourself as:
+Or install it yourself as:
 
     $ gem install webdrone
+
+Check for updates:
+
+    $ gem update webdrone
 
 ## Usage
 
@@ -120,7 +124,9 @@ a0.vrfy.link  'link', attr: 'disabled', eq: 'true'
 a0.vrfy.link  'link', attr: 'sample', contains: 'something'
 ```
 
+## Documentation
 
+Docs can be found [here](http://www.rubydoc.info/gems/webdrone).
 
 ## Development
 
