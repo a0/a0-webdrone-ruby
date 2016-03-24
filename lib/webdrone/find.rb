@@ -12,9 +12,10 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text)
+    def id(text, n: 1, all: false, visible: true)
       @a0.wait.for do
-        @a0.driver.find_element :id, text
+        items = @a0.driver.find_elements :id, text
+        choose(items, n, all, visible)
       end
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)

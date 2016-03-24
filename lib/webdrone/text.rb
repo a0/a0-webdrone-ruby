@@ -12,13 +12,14 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text)
+    def id(text, n: 1, all: false, visible: true)
+      @a0.find.send __method__, text
       @a0.find.id(text).text
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def css(text)
+    def css(text, n: 1, all: false, visible: true)
       @a0.find.css(text).text
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)

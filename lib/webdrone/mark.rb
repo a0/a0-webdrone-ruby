@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text, color: 'red')
-      flash @a0.find.id(text), color: color
+    def id(text, color: 'red', n: 1, all: false, visible: true)
+      flash @a0.find.id(text, n: n, all: all, visible: visible), color: color
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end

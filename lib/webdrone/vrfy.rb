@@ -12,13 +12,13 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text, attr: nil, eq: nil, contains: nil)
+    def id(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.id(text), attr: attr, eq: eq, contains: contains
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def css(text, attr: nil, eq: nil, contains: nil)
+    def css(text, n: 1, visible: true, attr: nil, eq: nil, contains: nil)
       vrfy @a0.find.css(text), attr: attr, eq: eq, contains: contains
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)

@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text)
-      @a0.find.id(text).click
+    def id(text, n: 1, all: false, visible: true)
+      @a0.find.id(text, n: n, all: all, visible: visible).click
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
