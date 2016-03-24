@@ -114,8 +114,9 @@ module Webdrone
   end
 
   def self.report_error(a0, exception, caller_locations)
+    return if a0.conf.error == :ignore
     exception = WebdroneError.new(exception.message, exception, a0, caller_locations) if exception.class != WebdroneError
-    
+
     raise exception if a0.conf.error == :raise or a0.conf.error == :raise_report
   end
 end
