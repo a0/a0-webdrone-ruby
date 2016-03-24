@@ -74,8 +74,14 @@ module Webdrone
     def report_screenshot
       begin
         write_title "AUTOMATIC SCREENSHOT"
-        file = @a0.shot.screen 'a0_webdrone_error_report'
-        write_line "Saved: #{file.path}"
+        begin
+          @a0.ctxt.with_conf error: :raise do
+            file = @a0.shot.screen 'a0_webdrone_error_report'
+            write_line "Screenshot Saved filename: #{file.path}"
+          end
+        rescue => exception
+          write_line "Error Saving screenhot: #{exception}"
+        end
 
         dump_error_report
       rescue
