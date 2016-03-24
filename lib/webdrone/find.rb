@@ -75,8 +75,6 @@ module Webdrone
         end
         if all
           list
-        elsif n == 1
-          list.first
         else
           list[n - 1]
         end
