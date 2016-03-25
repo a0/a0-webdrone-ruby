@@ -40,8 +40,8 @@ shared_examples "id on all browsers" do |browser|
 end
 
 describe Webdrone do
-  it_behaves_like "id on Webdrone", :chrome
-  it_behaves_like "id on Webdrone", :firefox
-  it_behaves_like "id on Webdrone", :safari   if OS.mac?
-  it_behaves_like "id on Webdrone", :ie       if OS.windows?
+  it_behaves_like "id on all browsers", :chrome
+  it_behaves_like "id on all browsers", :firefox
+  it_behaves_like "id on all browsers", :safari   if OS.mac?
+  it_behaves_like "id on all browsers", :ie       if OS.windows?
 end
