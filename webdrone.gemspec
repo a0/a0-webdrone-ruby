@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "ci_reporter_rspec"
   spec.add_development_dependency "parallel_tests"
+  spec.add_runtime_dependency "os"
   spec.add_runtime_dependency "selenium-webdriver"
   spec.add_runtime_dependency "xpath"
   spec.add_runtime_dependency "rubyXL"

@@ -47,6 +47,7 @@ module Webdrone
     def report
       report_script
       report_screenshot
+      report_os
       report_exception
       report_time
     end
@@ -56,7 +57,8 @@ module Webdrone
         ini, fin = [@location.lineno - 10 - 1, @location.lineno + 10 - 1]
         ini = 0 if ini < 0
 
-        write_title "#{@location.path} AT LINE #{sprintf '%3d', @location.lineno}"
+        write_title "LOCATION OF ERROR"
+        write_line "#{@location.path} AT LINE #{sprintf '%3d', @location.lineno}"
         File.readlines(@location.path)[ini..fin].each_with_index do |line, index|
           lno = index + ini + 1
           if lno == @location.lineno
@@ -77,10 +79,12 @@ module Webdrone
         begin
           @a0.ctxt.with_conf error: :raise do
             file = @a0.shot.screen 'a0_webdrone_error_report'
-            write_line "Screenshot Saved filename: #{file.path}"
+            write_line "Screenshot saved succesfully filename:"
+            write_line "#{File.expand_path(file.path)}"
           end
         rescue => exception
-          write_line "Error Saving screenhot: #{exception}"
+          write_line "Error Saving screenshot, exception:"
+          write_line "#{exception}"
         end
 
         dump_error_report
@@ -104,6 +108,15 @@ module Webdrone
         dump_error_report
       rescue
       end
+    end
+
+    def report_os
+      write_title "SYSTEM INFO"
+
+      write_line "A0 WEBDRONE VERSION: #{Webdrone::VERSION}"
+      write_line OS.report
+
+      dump_error_report
     end
 
     def report_time
