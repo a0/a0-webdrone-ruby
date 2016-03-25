@@ -16,17 +16,14 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Or install and check for updates:
 
     $ gem install webdrone
-
-Check for updates:
-
     $ gem update webdrone
 
 ## Documentation
 
-* [Documentation Wiki](https://github.com/a0/a0-webdrone-ruby/wiki)
+* [Documentation Wiki](https://github.com/a0/a0-webdrone-ruby/wiki) (Basic installation, usage and more).
 * Docs can be found [here](http://www.rubydoc.info/gems/webdrone).
 
 ## Development
