@@ -6,7 +6,7 @@ shared_examples "id on all browsers" do |browser|
     ttt = 'This is a P with an id of #id_001'
     
     Webdrone.create browser: browser, timeout: 10, error: :raise do |a0|
-      a0.open.url     'http://webdrone.io/sandbox/id'
+      a0.open.url     'http://webdrone.io/sandbox/bootstrap'
 
       a0.find.id      iii
 
@@ -25,13 +25,13 @@ shared_examples "id on all browsers" do |browser|
     iii = 'id_002'
     ttt = ['This is a P with an id of #id_002', 'This is a P with the same id of #id_002']
     Webdrone.create browser: browser, timeout: 10, error: :raise do |a0|
-      a0.open.url     'http://webdrone.io/sandbox/id'
+      a0.open.url     'http://webdrone.io/sandbox/bootstrap'
 
       r=a0.find.id    iii, all: true
-      expect(r.size).to be == 2
+      expect(r.size).to be == ttt.size
 
       r=a0.mark.id    iii, all: true
-      expect(r.size).to be == 2
+      expect(r.size).to be == ttt.size
 
       r=a0.text.id    iii, all: true
       expect(r).to eq(ttt)
