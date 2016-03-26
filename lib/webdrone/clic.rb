@@ -12,46 +12,25 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text, n: 1, all: false, visible: true)
-      @a0.find.id(text, n: n, all: all, visible: visible).click
+    def clic(text, n: 1, all: false, visible: true)
+      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
+      if item.is_a? Array
+        item.each(&:click)
+      else
+        item.click
+      end
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def css(text, n: 1, all: false, visible: true)
-      @a0.find.css(text, n: n, all: all, visible: visible).click
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
+    alias_method :id,     :clic
+    alias_method :css,    :clic
+    alias_method :link,   :clic
+    alias_method :button, :clic
+    alias_method :on,     :clic
+    alias_method :option, :clic
+    alias_method :xpath,  :clic
 
-    def link(text, n: 1, all: false, visible: true)
-      @a0.find.link(text, n: n, all: all, visible: visible).click
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def button(text, n: 1, all: false, visible: true)
-      @a0.find.button(text, n: n, all: all, visible: visible).click
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def on(text, n: 1, all: false, visible: true)
-      @a0.find.on(text, n: n, all: all, visible: visible).click
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def option(text, n: 1, all: false, visible: true)
-      @a0.find.option(text, n: n, all: all, visible: visible).click
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
-
-    def xpath(text, n: 1, all: false, visible: true)
-      @a0.find.xpath(text, n: n, all: all, visible: visible).click
-    rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
-    end
+    protected :clic
   end
 end
