@@ -44,8 +44,8 @@ module Webdrone
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def mark(key, color: 'red')
-      @a0.mark.flash self.find_item(key), color: color
+    def mark(key, color: '#af1616', times: 3, sleep: 0.05)
+      @a0.mark.mark_item self.find_item(key), color: color, times: times, sleep: sleep
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end

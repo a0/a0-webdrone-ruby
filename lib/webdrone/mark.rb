@@ -12,7 +12,7 @@ module Webdrone
       @a0 = a0
     end
 
-    def mark(text, n: 1, all: false, visible: true, color: 'red', times: 3, sleep: 0.05)
+    def mark(text, n: 1, all: false, visible: true, color: '#af1616', times: 3, sleep: 0.05)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
       mark_item item, color: color, times: times, sleep: sleep
       item
@@ -28,7 +28,7 @@ module Webdrone
     alias_method :option, :mark
     alias_method :xpath,  :mark
 
-    def mark_item(item, color: 'red', times: 3, sleep: 0.05)
+    def mark_item(item, color: '#af1616', times: 3, sleep: 0.05)
       times.times do
         mark_item_border item, 'white'
         sleep sleep
@@ -49,6 +49,6 @@ module Webdrone
       end
     end
 
-    protected :mark, :mark_item, :mark_item_border
+    protected :mark, :mark_item_border
   end
 end
