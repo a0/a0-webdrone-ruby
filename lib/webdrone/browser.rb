@@ -37,13 +37,7 @@ module Webdrone
         @driver = Selenium::WebDriver.for browser.to_sym, prefs: chrome_prefs, args: ['--disable-popup-blocking']
       elsif outdir != nil and browser.to_sym == :firefox
         firefox_profile = Browser.firefox_profile if firefox_profile == nil
-        case RbConfig::CONFIG['host_os'].downcase
-          when /mingw|mswin/
-            # Windows
-            downdir = outdir.gsub("/", "\\")
-          else
-            downdir = outdir
-        end
+        downdir = OS.windows? ? outdir.gsub("/", "\\") : outdir
         firefox_profile['browser.download.dir'] = downdir
         @driver = Selenium::WebDriver.for browser.to_sym, profile: firefox_profile
       else
