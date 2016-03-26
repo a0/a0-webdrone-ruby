@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-shared_examples "id on all browsers" do |browser|
-  it "can find/mark/text/vrfy/clic an element by id on #{browser}" do
+shared_examples ".id on all browsers" do |browser|
+  it "can find/mark/text/vrfy/clic an element by .id on #{browser}" do
     iii = 'id_001'
     ttt = 'This is a P with an id of #id_001'
     
@@ -23,7 +23,7 @@ shared_examples "id on all browsers" do |browser|
     end
   end
   
-  it "can find/mark/text/vrfy/clic multiple elements by id on #{browser}" do
+  it "can find/mark/text/vrfy/clic multiple elements by .id on #{browser}" do
     iii = 'id_002'
     ttt = ['This is a P with an id of #id_002', 'This is a P with the same id of #id_002']
 
@@ -49,8 +49,8 @@ shared_examples "id on all browsers" do |browser|
 end
 
 describe Webdrone do
-  it_behaves_like "id on all browsers", :chrome
-  it_behaves_like "id on all browsers", :firefox
-  it_behaves_like "id on all browsers", :safari   if OS.mac?
-  it_behaves_like "id on all browsers", :ie       if OS.windows?
+  it_behaves_like ".id on all browsers", :chrome
+  it_behaves_like ".id on all browsers", :firefox
+  it_behaves_like ".id on all browsers", :safari   if OS.mac?
+  it_behaves_like ".id on all browsers", :ie       if OS.windows?
 end
