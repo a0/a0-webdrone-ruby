@@ -25,7 +25,7 @@ module Webdrone
       @@chrome_prefs
     end
 
-    def initialize(browser: 'chrome', create_outdir: true, outdir: nil, timeout:, maximize: true, error: :raise_report, chrome_prefs: nil, firefox_profile: nil)
+    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, maximize: true, error: :raise_report, chrome_prefs: nil, firefox_profile: nil)
       if create_outdir or outdir
         outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
         self.conf.outdir = outdir
