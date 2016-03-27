@@ -15,7 +15,6 @@ module Webdrone
     def mark(text, n: 1, all: false, visible: true, color: '#af1616', times: 3, sleep: 0.05)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
       mark_item item, color: color, times: times, sleep: sleep
-      item
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
@@ -37,6 +36,7 @@ module Webdrone
         mark_item_border item, color
         sleep sleep
       end
+      item
     end
 
     def mark_item_border(item, color)
