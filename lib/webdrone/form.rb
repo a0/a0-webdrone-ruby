@@ -12,7 +12,7 @@ module Webdrone
       @a0 = a0
     end
 
-    def with_xpath(xpath, &block)
+    def with_xpath(xpath = nil, &block)
       @xpath = xpath
       instance_eval &block
     rescue => exception
@@ -67,8 +67,10 @@ module Webdrone
 
     protected
       def find_item(key)
-        if @xpath
-          @lastitem = @a0.driver.find_element :xpath, sprintf(@xpath, key)
+        if @xpath.respond_to? :call
+          @lastitem = @a0.find.xpath @xpath.call(key).to_s
+        elsif @xpath.is_a? String and @xpath.include? '%s'
+          @lastitem = @a0.find.xpath sprintf(@xpath, key)
         else
           @lastitem = @a0.find.xpath XPath::HTML.field(key).to_s
         end
