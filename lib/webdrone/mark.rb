@@ -42,10 +42,10 @@ module Webdrone
     def mark_item_border(item, color)
       if item.is_a? Array
         item.each do |item|
-          @a0.exec.script("arguments[0].style.border = '2px solid #{color}'", item)
+          @a0.exec.script("arguments[0].style.outline = '2px solid #{color}'", item)
         end
       else
-        @a0.exec.script("arguments[0].style.border = '2px solid #{color}'", item)
+        @a0.exec.script("arguments[0].style.outline = '2px solid #{color}'", item)
       end
     end
 
