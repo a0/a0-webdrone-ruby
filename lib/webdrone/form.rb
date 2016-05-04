@@ -13,10 +13,12 @@ module Webdrone
     end
 
     def with_xpath(xpath = nil, &block)
-      @xpath = xpath
+      old_xpath, @xpath = @xpath, xpath
       instance_eval &block
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+    ensure
+      @xpath = old_xpath
     end
 
     def set(key, val, n: 1, visible: true)
