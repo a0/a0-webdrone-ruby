@@ -1,6 +1,6 @@
 module Webdrone
   class WebdroneError < StandardError
-    attr_reader :original, :a0, :caller_locations
+    attr_reader :original, :a0, :caller_locations, :consoled
     def initialize(msg, original = $!, a0, caller_locations)
       super(msg)
       @original = original
@@ -97,11 +97,12 @@ module Webdrone
         write_title "EXCEPTION DUMP"
 
         write_line "#{@original.class}: #{@original.message}"
-        @original.backtrace_locations.each do |location|
+        @original.backtrace_locations.each_with_index do |location, index|
           if location.path == @location.path and location.lineno == @location.lineno
-            write_line sprintf " ==> from %s", location
+            write_line sprintf "%02d: ==> from %s", index, location
+            @caller_index = index
           else
-            write_line sprintf "     from %s", location
+            write_line sprintf "%02d:     from %s", index, location
           end
         end
 
@@ -124,12 +125,29 @@ module Webdrone
 
       dump_error_report
     end
+
+    def start_console
+      return if @consoled
+      @consoled = true
+      while true do
+        write_title "DEVELOPER CONSOLE"
+        print "Enter stack index [#{@caller_index}] or 'exit': "
+        input = gets.chomp
+        break if input.include? 'exit'
+        @caller_index = input.to_i unless input.empty?
+        location = @original.backtrace_locations[@caller_index]
+        index = Kernel.caller_locations.index { |item| item.path == location.path and item.lineno == location.lineno }
+        Webdrone.irb_console Kernel.binding.of_caller(index + 1)
+        report_exception
+      end
+    end
   end
 
   def self.report_error(a0, exception, caller_locations)
     return if a0.conf.error == :ignore
     exception = WebdroneError.new(exception.message, exception, a0, caller_locations) if exception.class != WebdroneError
 
+    exception.start_console if a0.conf.developer
     raise exception if a0.conf.error == :raise or a0.conf.error == :raise_report
   end
 end

@@ -41,7 +41,7 @@ module Webdrone
   end
 
   def self.irb_console(binding = nil)
-    return if IRB.CurrentContext
+    return if IRB.CurrentContext and not binding
     binding = Kernel.binding.of_caller(1) if binding == nil
     IRB.start_session(binding)
   end
@@ -49,7 +49,10 @@ end
 
 module IRB
   def self.start_session(binding)
-    IRB.setup(nil)
+    unless $a0_irb_setup_done
+      IRB.setup(nil)
+      $a0_irb_setup_done = true
+    end
 
     workspace = WorkSpace.new(binding)
 
@@ -66,8 +69,12 @@ module IRB
       irb.signal_handle
     end
 
-    catch(:IRB_EXIT) do
-      irb.eval_input
+    begin
+      catch(:IRB_EXIT) do
+        irb.eval_input
+      end
+    ensure
+      IRB.irb_at_exit
     end
   end
 end
