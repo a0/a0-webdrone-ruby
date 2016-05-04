@@ -19,8 +19,8 @@ module Webdrone
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def set(key, val)
-      item = self.find_item(key)
+    def set(key, val, n: 1, visible: true)
+      item = self.find_item(key, n: n, visible: visible)
       if item.tag_name == 'select'
         option = item.find_element :xpath, XPath::HTML.option(val).to_s
         option.click
@@ -32,26 +32,26 @@ module Webdrone
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def get(key)
-      self.find_item(key)[:value]
+    def get(key, n: 1, visible: true)
+      self.find_item(key, n: n, visible: visible)[:value]
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def clic(key)
-      self.find_item(key).click
+    def clic(key, n: 1, visible: true)
+      self.find_item(key, n: n, visible: visible).click
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def mark(key, color: '#af1616', times: 3, sleep: 0.05)
-      @a0.mark.mark_item self.find_item(key), color: color, times: times, sleep: sleep
+    def mark(key, n: 1, visible: true, color: '#af1616', times: 3, sleep: 0.05)
+      @a0.mark.mark_item self.find_item(key, n: n, visible: visible), color: color, times: times, sleep: sleep
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
     end
 
-    def submit(key = nil)
-      self.find_item(key) if key
+    def submit(key = nil, n: 1, visible: true)
+      self.find_item(key, n: n, visible: visible) if key
       @lastitem.submit
     rescue => exception
       Webdrone.report_error(@a0, exception, Kernel.caller_locations)
@@ -66,13 +66,13 @@ module Webdrone
     end
 
     protected
-      def find_item(key)
+      def find_item(key, n: 1, visible: true)
         if @xpath.respond_to? :call
-          @lastitem = @a0.find.xpath @xpath.call(key).to_s
+          @lastitem = @a0.find.xpath @xpath.call(key).to_s, n: n, visible: visible
         elsif @xpath.is_a? String and @xpath.include? '%s'
-          @lastitem = @a0.find.xpath sprintf(@xpath, key)
+          @lastitem = @a0.find.xpath sprintf(@xpath, key), n: n, visible: visible
         else
-          @lastitem = @a0.find.xpath XPath::HTML.field(key).to_s
+          @lastitem = @a0.find.xpath XPath::HTML.field(key).to_s, n: n, visible: visible
         end
       end
   end
