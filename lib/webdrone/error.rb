@@ -134,10 +134,25 @@ module Webdrone
         print "Enter stack index [#{@caller_index}] or 'exit': "
         input = gets.chomp
         break if input.include? 'exit'
-        @caller_index = input.to_i unless input.empty?
-        location = @original.backtrace_locations[@caller_index]
-        index = Kernel.caller_locations.index { |item| item.path == location.path and item.lineno == location.lineno }
-        Webdrone.irb_console Kernel.binding.of_caller(index + 1)
+        begin
+          @caller_index = input.to_i if not input.empty?
+          location = @original.backtrace_locations[@caller_index]
+          raise '' if location == nil
+        rescue => e
+          puts "** INVALID STACK NUMBER **"
+          next
+        end
+
+        @a0.ctxt.with_conf error: :raise, developer: false do
+          begin            
+            index = Kernel.caller_locations.index do |item|
+              item.path == location.path and item.lineno == location.lineno
+            end
+            Webdrone.irb_console Kernel.binding.of_caller(index + 1) if index != nil
+          rescue => e
+            puts "** INVALID STACK NUMBER #{e} **"
+          end
+        end
         report_exception
       end
     end
