@@ -25,7 +25,7 @@ module Webdrone
       @@chrome_prefs
     end
 
-    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, developer: false, maximize: true, error: :raise_report, chrome_prefs: nil, firefox_profile: nil)
+    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, developer: false, quit_at_exit: false, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, chrome_prefs: nil, firefox_profile: nil)
       if create_outdir or outdir
         outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
         self.conf.outdir = outdir
@@ -43,10 +43,42 @@ module Webdrone
       else
         @driver = Selenium::WebDriver.for browser.to_sym
       end
-      self.conf.error = error
+      if quit_at_exit
+        at_exit do
+          begin
+            @driver.quit
+          rescue
+          end
+        end
+      end
+      self.conf.error = error.to_sym
       self.conf.developer = developer
       self.conf.timeout = timeout if timeout
-      self.maximize if maximize
+      
+      if developer
+        win_x = win_y = 0
+        win_w = 0.5
+        win_h = 1.0
+      end
+      if win_x or win_y or win_w or win_h
+        x, y, w, h = self.exec.script 'return [window.screenLeft ? window.screenLeft : window.screenX, window.screenTop ? window.screenTop : window.screenY, window.screen.availWidth, window.screen.availHeight];'
+        win_x ||= x
+        win_y ||= y
+        if win_w.is_a? Float
+          win_w = (w * win_w).to_i
+        else
+          win_w ||= w
+        end
+        if win_h.is_a? Float
+          win_h = (h * win_h).to_i
+        else
+          win_h ||= h
+        end
+        @driver.manage.window.position= Selenium::WebDriver::Point.new win_x, win_y
+        @driver.manage.window.resize_to(win_w, win_h)
+      else
+        self.maximize if maximize
+      end
     end
 
     def maximize
