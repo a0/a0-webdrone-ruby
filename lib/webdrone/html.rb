@@ -20,7 +20,7 @@ module Webdrone
         item.attribute 'innerHTML'
       end
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     alias_method :id,     :find_html

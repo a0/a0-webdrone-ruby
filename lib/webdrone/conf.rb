@@ -18,21 +18,21 @@ module Webdrone
       @timeout = val
       @a0.driver.manage.timeouts.implicit_wait = val
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def outdir=(val)
       @outdir = val
       FileUtils.mkdir_p val
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def error=(val)
       raise "Invalid value '#{val}' for error" if not [:raise_report, :raise, :ignore].include? val
       @error = val
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
   end
 end

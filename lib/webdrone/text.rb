@@ -20,7 +20,7 @@ module Webdrone
         item.text
       end
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     alias_method :id,     :text
@@ -34,7 +34,7 @@ module Webdrone
     def page_title
       @a0.driver.title
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     protected :text

@@ -15,13 +15,13 @@ module Webdrone
     def url(url)
       @a0.driver.get url
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def reload
       @a0.driver.navigate.refresh
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
   end
 end

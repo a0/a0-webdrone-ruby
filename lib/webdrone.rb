@@ -23,6 +23,7 @@ require 'irb'
 require 'fileutils'
 require 'binding_of_caller'
 require 'pathname'
+require 'pry'
 
 module Webdrone
   def self.create(*args)
@@ -31,7 +32,7 @@ module Webdrone
       begin
         yield a0
       rescue => exception
-        Webdrone.report_error(a0, exception, Kernel.caller_locations)
+        Webdrone.report_error(a0, exception)
       ensure
         a0.quit
       end
@@ -44,6 +45,11 @@ module Webdrone
     return if IRB.CurrentContext and not binding
     binding = Kernel.binding.of_caller(1) if binding == nil
     IRB.start_session(binding)
+  end
+
+  def self.pry_console(binding = nil)
+    binding = Kernel.binding_of_caller(1) unless binding
+    binding.pry    
   end
 end
 

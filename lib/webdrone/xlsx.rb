@@ -30,7 +30,7 @@ module Webdrone
       end
       @dict
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def rows(sheet: nil, filename: nil)
@@ -47,7 +47,7 @@ module Webdrone
       end
       @rows
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def both(sheet: nil, filename: nil)
@@ -72,7 +72,7 @@ module Webdrone
       end
       @both
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
 
@@ -117,13 +117,13 @@ module Webdrone
       k = workbook.write(@filename)
       reset
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def reset()
       @dict = @rows = @both = nil
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     protected

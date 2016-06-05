@@ -18,7 +18,7 @@ module Webdrone
       filename = File.join(@a0.conf.outdir, filename)
       @a0.driver.save_screenshot filename
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
   end
 end

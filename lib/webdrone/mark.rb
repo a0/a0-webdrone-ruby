@@ -16,7 +16,7 @@ module Webdrone
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
       mark_item item, color: color, times: times, sleep: sleep
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     alias_method :id,     :mark

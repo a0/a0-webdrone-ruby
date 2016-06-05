@@ -16,7 +16,7 @@ module Webdrone
       old_xpath, @xpath = @xpath, xpath
       instance_eval &block
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     ensure
       @xpath = old_xpath
     end
@@ -31,32 +31,32 @@ module Webdrone
         item.send_keys(val)
       end
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def get(key, n: 1, visible: true)
       self.find_item(key, n: n, visible: visible)[:value]
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def clic(key, n: 1, visible: true)
       self.find_item(key, n: n, visible: visible).click
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def mark(key, n: 1, visible: true, color: '#af1616', times: 3, sleep: 0.05)
       @a0.mark.mark_item self.find_item(key, n: n, visible: visible), color: color, times: times, sleep: sleep
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def submit(key = nil, n: 1, visible: true)
       self.find_item(key, n: n, visible: visible) if key
       @lastitem.submit
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def xlsx(sheet: nil, filename: nil)
@@ -64,7 +64,7 @@ module Webdrone
         self.set k, v
       end
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     protected

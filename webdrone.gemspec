@@ -37,4 +37,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "xpath"
   spec.add_runtime_dependency "rubyXL"
   spec.add_runtime_dependency "binding_of_caller"
+  spec.add_runtime_dependency "pry"
 end

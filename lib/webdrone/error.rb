@@ -1,6 +1,7 @@
 module Webdrone
-  class WebdroneError < StandardError
-    attr_reader :original, :a0, :caller_locations, :consoled
+  class WebdroneError < RuntimeError
+    attr_reader :original, :a0, :caller_locations, :caller_location_index
+
     def initialize(msg, original = $!, a0, caller_locations)
       super(msg)
       @original = original
@@ -10,9 +11,10 @@ module Webdrone
 
       begin
         # find location of user error
-        @caller_locations[0..-1].each do |location|
+        @caller_locations[0..-1].each_with_index do |location, index|
           if Gem.path.none? { |path| location.path.include? path }
             @location = location
+            @caller_location_index = index
             break
           end
         end
@@ -125,44 +127,17 @@ module Webdrone
 
       dump_error_report
     end
-
-    def start_console
-      return if @consoled
-      @consoled = true
-      while true do
-        write_title "DEVELOPER CONSOLE"
-        print "Enter stack index [#{@caller_index}] or 'exit': "
-        input = gets.chomp
-        break if input.include? 'exit'
-        begin
-          @caller_index = input.to_i if not input.empty?
-          location = @original.backtrace_locations[@caller_index]
-          raise '' if location == nil
-        rescue => e
-          puts "** INVALID STACK NUMBER **"
-          next
-        end
-
-        @a0.ctxt.with_conf error: :raise, developer: false do
-          begin            
-            index = Kernel.caller_locations.index do |item|
-              item.path == location.path and item.lineno == location.lineno
-            end
-            Webdrone.irb_console Kernel.binding.of_caller(index + 1) if index != nil
-          rescue => e
-            puts "** INVALID STACK NUMBER #{e} **"
-          end
-        end
-        report_exception
-      end
-    end
   end
 
-  def self.report_error(a0, exception, caller_locations)
+  def self.report_error(a0, exception)
     return if a0.conf.error == :ignore
-    exception = WebdroneError.new(exception.message, exception, a0, caller_locations) if exception.class != WebdroneError
+    if exception.class != WebdroneError
+      exception = WebdroneError.new(exception.message, exception, a0, Kernel.caller_locations)
+      if a0.conf.developer and not exception.caller_location_index.nil?
+        Kernel.binding.of_caller(exception.caller_location_index + 1).pry
+      end
+    end
 
-    exception.start_console if a0.conf.developer
     raise exception if a0.conf.error == :raise or a0.conf.error == :raise_report
   end
 end

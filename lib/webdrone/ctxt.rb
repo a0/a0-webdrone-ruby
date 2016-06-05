@@ -17,14 +17,14 @@ module Webdrone
       @a0.exec.script "function a0_ctx_create_tab() { var w = window.open(); w.document.open(); w.document.write('A0 CTXT CREATE TAB'); w.document.close(); } a0_ctx_create_tab();"
       @a0.driver.switch_to.window @a0.driver.window_handles.last
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
     
     def close_tab
       @a0.driver.close
       @a0.driver.switch_to.window @a0.driver.window_handles.last
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def with_frame(name)
@@ -41,14 +41,14 @@ module Webdrone
       end
       name
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
     
     def reset
       @a0.driver.switch_to.default_content
       @framestack = []
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
     
     def with_alert
@@ -56,13 +56,13 @@ module Webdrone
         yield @a0.driver.switch_to.alert
       end
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def ignore_alert
       @a0.exec.script 'alert = function(message){return true;};'
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     end
 
     def with_conf(new_config)
@@ -75,7 +75,7 @@ module Webdrone
 
       yield
     rescue => exception
-      Webdrone.report_error(@a0, exception, Kernel.caller_locations)
+      Webdrone.report_error(@a0, exception)
     ensure
       current_config.each do |k, v|
         @a0.conf.send "#{k}=", v
