@@ -25,7 +25,22 @@ module Webdrone
       @@chrome_prefs
     end
 
+    def env_update(binding)
+      ENV.keys.select { |env| env.start_with? 'WEBDRONE_' }.each do |env|
+        v = env[9..-1].downcase.to_sym
+        if binding.local_variable_defined? v
+          o = binding.local_variable_get(v)
+          n = ENV[env]
+          binding.local_variable_set(v, n)
+          puts "Webdrone info: overriding #{v} from '#{o}' to '#{n}'."
+        else
+          puts "Webdrone warn: unknown environment #{env}."
+        end
+      end
+    end
+
     def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, developer: false, quit_at_exit: false, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, chrome_prefs: nil, firefox_profile: nil)
+      env_update(Kernel.binding) if use_env
       if create_outdir or outdir
         outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
         self.conf.outdir = outdir
