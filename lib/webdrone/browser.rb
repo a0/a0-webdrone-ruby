@@ -68,7 +68,7 @@ module Webdrone
       end
       self.conf.error = error.to_sym
       self.conf.developer = developer
-      self.conf.timeout = timeout if timeout
+      self.conf.timeout = timeout.to_i if timeout
       
       if developer
         win_x = win_y = 0
@@ -102,6 +102,13 @@ module Webdrone
 
     def quit
       @driver.quit
+    end
+
+    def console(binding = nil)
+      binding = Kernel.binding.of_caller(1) unless binding
+      @ctxt.with_conf developer: false do
+        binding.pry
+      end
     end
   end
 end

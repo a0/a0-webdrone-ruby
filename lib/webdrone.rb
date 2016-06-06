@@ -42,14 +42,10 @@ module Webdrone
   end
 
   def self.irb_console(binding = nil)
+    puts "Warning: Webdrone.irb_console is deprecated, please use a0.console instead"
     return if IRB.CurrentContext and not binding
     binding = Kernel.binding.of_caller(1) if binding == nil
     IRB.start_session(binding)
-  end
-
-  def self.pry_console(binding = nil)
-    binding = Kernel.binding_of_caller(1) unless binding
-    binding.pry    
   end
 end
 
