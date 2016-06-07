@@ -15,13 +15,15 @@ module Webdrone
     def vrfy(text, n: 1, all: false, visible: true, attr: nil, eq: nil, contains: nil)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
       if item.is_a? Array
-        item.each { |x| vrfy_item x, attr: attr, eq: eq, contains: contains }
+        item.each { |x| vrfy_item x, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains }
       else
-        vrfy_item item, attr: attr, eq: eq, contains: contains
+        vrfy_item item, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains
       end
+    rescue => exception
+      Webdrone.report_error(@a0, exception)
     end
 
-    def vrfy_item(item, attr: nil, eq: nil, contains: nil)
+    def vrfy_item(item, text: nil, callee: nil, attr: nil, eq: nil, contains: nil)
       if attr != nil
         r = item.attribute(attr) == eq if eq != nil
         r = item.attribute(attr).include? contains if contains != nil
@@ -34,9 +36,9 @@ module Webdrone
         targ = "eq: [#{eq}]" if eq
         targ = "contains: [#{contains}]" if contains
         if attr != nil
-          raise Exception.new "ERROR: Attribute [#{attr}] value [#{item.attribute(attr)}] does not comply #{targ}"
+          raise "VRFY: #{callee} [#{text}] attr [#{attr}] value [#{item.attribute(attr)}] does not comply #{targ}"
         else
-          raise Exception.new "ERROR: Value [#{item.text}] does not comply #{targ}"
+          raise "VRFY: #{callee} [#{text}] text value [#{item.text}] does not comply #{targ}"
         end
       end
     end
