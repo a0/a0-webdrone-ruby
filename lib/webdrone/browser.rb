@@ -26,15 +26,26 @@ module Webdrone
     end
 
     def env_update(binding)
+      bool_vars = [:create_outdir, :developer, :quit_at_exit, :maximize]
       ENV.keys.select { |env| env.start_with? 'WEBDRONE_' }.each do |env|
         v = env[9..-1].downcase.to_sym
         if binding.local_variable_defined? v
           o = binding.local_variable_get(v)
           n = ENV[env]
+          if bool_vars.include? v
+            if n == "true"
+              n = true
+            elsif n == "false"
+              n = false
+            else
+              puts "Webdrone: ignoring value '#{n}' for boolean parameter #{v}."
+              next
+            end
+          end
           binding.local_variable_set(v, n)
-          puts "Webdrone info: overriding #{v} from '#{o}' to '#{n}'."
+          puts "Webdrone: overriding #{v} from '#{o}' to '#{n}'."
         else
-          puts "Webdrone warn: unknown environment #{env}."
+          puts "Webdrone: ignoring unknown parameter #{env}."
         end
       end
     end
