@@ -106,8 +106,15 @@ module Webdrone
 
     def console(binding = nil)
       binding = Kernel.binding.of_caller(1) unless binding
-      @ctxt.with_conf developer: false do
-        binding.pry
+      old_error = self.conf.error
+      old_developer = self.conf.developer
+      begin
+        self.conf.error = :raise
+        self.conf.developer = false
+        Webdrone.pry_console binding
+      ensure
+        self.conf.error = old_error
+        self.conf.developer = old_developer
       end
     end
   end

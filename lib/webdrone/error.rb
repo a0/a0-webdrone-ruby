@@ -134,7 +134,9 @@ module Webdrone
     if exception.class != WebdroneError
       exception = WebdroneError.new(exception.message, exception, a0, Kernel.caller_locations)
       if a0.conf.developer and not exception.caller_location_index.nil?
-        Kernel.binding.of_caller(exception.caller_location_index + 1).pry
+        exception.write_title "STARTING DEVELOPER CONSOLE ON ERROR"
+        exception.dump_error_report
+        a0.console Kernel.binding.of_caller(exception.caller_location_index + 1)
       end
     end
 
