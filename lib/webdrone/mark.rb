@@ -12,9 +12,9 @@ module Webdrone
       @a0 = a0
     end
 
-    def mark(text, n: 1, all: false, visible: true, color: '#af1616', times: 3, sleep: 0.05)
+    def mark(text, n: 1, all: false, visible: true, color: '#af1616', times: 3, sleep: 0.05, shot: nil)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
-      mark_item item, color: color, times: times, sleep: sleep
+      mark_item item, color: color, times: times, sleep: sleep, shot: shot, text: text
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
@@ -27,7 +27,7 @@ module Webdrone
     alias_method :option, :mark
     alias_method :xpath,  :mark
 
-    def mark_item(item, color: '#af1616', times: 3, sleep: 0.05)
+    def mark_item(item, color: '#af1616', times: 3, sleep: 0.05, shot: nil, text: nil)
       times.times do
         mark_item_border item, 'white'
         sleep sleep
@@ -36,6 +36,7 @@ module Webdrone
         mark_item_border item, color
         sleep sleep
       end
+      @a0.shot.screen shot.is_a?(String) ? shot : text  if shot
       item
     end
 
