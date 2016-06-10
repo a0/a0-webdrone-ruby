@@ -107,10 +107,16 @@ module Webdrone
           end
         end
         head = rows.shift
-        @both.each_with_index do |entry, i|
+        @both.each_with_index do |entry, rowi|
           entry.each do |k, v|
-            index = head.index(k)
-            worksheet[i + 1][index].change_contents(v) if index
+            coli = head.index(k)
+            if coli
+              if worksheet[rowi + 1] == nil || worksheet[rowi + 1][coli] == nil
+                worksheet.add_cell(rowi + 1, coli, v)
+              else
+                worksheet[rowi + 1][coli].change_contents(v)
+              end
+            end
           end
         end
       end
