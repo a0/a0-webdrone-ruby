@@ -6,10 +6,11 @@ module Webdrone
   end
 
   class Form
-    attr_accessor :a0
+    attr_accessor :a0, :data
 
     def initialize(a0)
       @a0 = a0
+      @data = nil
     end
 
     def with_xpath(xpath = nil, &block)
@@ -21,6 +22,71 @@ module Webdrone
       @xpath = old_xpath
     end
 
+    def save(filename:, sheet:, item:, name: 'ITEM')
+      prev = @data
+      data = {}
+      @data = data
+
+      yield
+
+      File.open(".#{filename}.lock", File::RDWR | File::CREAT, 0644) do |file|
+        items = {}
+        items[item] = data
+
+        begin
+          workbook = RubyXL::Parser.parse(filename)
+          worksheet = workbook[sheet]
+          worksheet = workbook.add_worksheet sheet unless worksheet
+        rescue
+          workbook = RubyXL::Workbook.new
+          worksheet = workbook[0]
+          worksheet.sheet_name = sheet
+        end
+
+        rows = worksheet.sheet_data.rows.collect do |row|
+          row.cells.collect do |cell|
+            cell.value if cell != nil
+          end
+        end
+        heads = rows.shift
+        rows.each do |row|
+          item = {}
+          key = nil
+          row.each_with_index do |val, i|
+            val = val.to_s if val
+            if i == 0
+              key = val
+            elsif key
+              items[key] = {} unless items[key]
+              items[key][heads[i]] = val if heads[i] != nil and items[key][heads[i]] == nil
+            end
+          end
+        end
+        x = heads.shift
+        x ||= name
+        worksheet.add_cell 0, 0, x
+        
+        heads += data.keys.sort
+        heads = heads.uniq
+
+        heads.each_with_index do |field, coli|
+          worksheet.add_cell 0, coli + 1, field
+        end
+        worksheet.change_row_bold 0, true
+        items.sort.each_with_index do |elem, rowi|
+          key, item = elem
+          worksheet.add_cell rowi + 1, 0, key
+          heads.each_with_index do |field, coli|
+            worksheet.add_cell rowi + 1, coli + 1, item[field]
+          end
+        end
+
+        workbook.write filename
+      end
+
+      @data = prev
+    end
+
     def set(key, val, n: 1, visible: true)
       item = self.find_item(key, n: n, visible: visible)
       if item.tag_name == 'select'
@@ -30,6 +96,8 @@ module Webdrone
         item.clear
         item.send_keys(val)
       end
+      @data[key] = val if @data
+      nil
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
