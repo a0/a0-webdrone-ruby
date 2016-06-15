@@ -28,7 +28,7 @@ module Webdrone
       @data = data
 
       yield
-
+    ensure
       File.open(".#{filename}.lock", File::RDWR | File::CREAT, 0644) do |file|
         items = {}
         items[item] = data
