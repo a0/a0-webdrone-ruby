@@ -48,7 +48,7 @@ module Webdrone
             cell.value if cell != nil
           end
         end
-        heads = rows.shift
+        heads = rows.shift || []
         rows.each do |row|
           item = {}
           key = nil
