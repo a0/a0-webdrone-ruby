@@ -38,4 +38,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rubyXL"
   spec.add_runtime_dependency "binding_of_caller"
   spec.add_runtime_dependency "pry"
+  spec.add_runtime_dependency "highline"
 end
