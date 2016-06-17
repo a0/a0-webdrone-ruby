@@ -1,20 +1,22 @@
 module Webdrone
   class WebdroneError < RuntimeError
-    attr_reader :original, :a0, :caller_locations, :caller_location_index
+    attr_reader :original, :a0, :binding
 
-    def initialize(msg, original = $!, a0, caller_locations)
+    def initialize(msg, original = $!, a0, bindings)
       super(msg)
       @original = original
       @a0 = a0
-      @caller_locations = caller_locations
       @buffer = []
+      @binding = nil
+      @location = nil
 
       begin
         # find location of user error
-        @caller_locations[0..-1].each_with_index do |location, index|
-          if Gem.path.none? { |path| location.path.include? path }
+        bindings[0..-1].each_with_index do |binding, index|
+          location = { path: binding.eval('__FILE__'), lineno: binding.eval('__LINE__') }
+          if Gem.path.none? { |path| location[:path].include? path }
             @location = location
-            @caller_location_index = index
+            @binding = binding
             break
           end
         end
@@ -56,14 +58,14 @@ module Webdrone
 
     def report_script
       begin
-        ini, fin = [@location.lineno - 10 - 1, @location.lineno + 10 - 1]
+        ini, fin = [@location[:lineno] - 10 - 1, @location[:lineno] + 10 - 1]
         ini = 0 if ini < 0
 
         write_title "LOCATION OF ERROR"
-        write_line "#{@location.path} AT LINE #{sprintf '%3d', @location.lineno}"
-        File.readlines(@location.path)[ini..fin].each_with_index do |line, index|
+        write_line "#{@location[:path]} AT LINE #{sprintf '%3d', @location[:lineno]}"
+        File.readlines(@location[:path])[ini..fin].each_with_index do |line, index|
           lno = index + ini + 1
-          if lno == @location.lineno
+          if lno == @location[:lineno]
             write_line sprintf "%3d ==> %s", lno, line
           else
             write_line sprintf "%3d     %s", lno, line
@@ -100,9 +102,8 @@ module Webdrone
 
         write_line "#{@original.class}: #{@original.message}"
         @original.backtrace_locations.each_with_index do |location, index|
-          if location.path == @location.path and location.lineno == @location.lineno
+          if location.path == @location[:path] and location.lineno == @location[:lineno]
             write_line sprintf "%02d: ==> from %s", index, location
-            @caller_index = index
           else
             write_line sprintf "%02d:     from %s", index, location
           end
@@ -132,11 +133,11 @@ module Webdrone
   def self.report_error(a0, exception)
     return if a0.conf.error == :ignore
     if exception.class != WebdroneError
-      exception = WebdroneError.new(exception.message, exception, a0, Kernel.caller_locations)
-      if a0.conf.developer and not exception.caller_location_index.nil?
+      exception = WebdroneError.new(exception.message, exception, a0, Kernel.binding.callers)
+      if a0.conf.developer and exception.binding
         exception.write_title "STARTING DEVELOPER CONSOLE ON ERROR"
         exception.dump_error_report
-        a0.console Kernel.binding.of_caller(exception.caller_location_index + 1)
+        a0.console exception.binding
       end
     end
 
