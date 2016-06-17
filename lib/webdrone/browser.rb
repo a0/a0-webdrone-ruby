@@ -50,7 +50,7 @@ module Webdrone
       end
     end
 
-    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, developer: false, quit_at_exit: false, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_prefs: nil, firefox_profile: nil)
+    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, developer: false, logger: true, quit_at_exit: false, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_prefs: nil, firefox_profile: nil)
       env_update(Kernel.binding) if use_env
       if create_outdir or outdir
         outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
@@ -80,6 +80,7 @@ module Webdrone
       self.conf.error = error.to_sym
       self.conf.developer = developer
       self.conf.timeout = timeout.to_i if timeout
+      self.conf.logger = logger
       
       if developer
         win_x = win_y = 0
