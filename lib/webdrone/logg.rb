@@ -64,11 +64,11 @@ module Webdrone
       cols, line = HighLine::SystemExtensions.terminal_size
       total = 6 + 15 + 11 + 5
       w = cols - total
-      w = 80 if not w
       w /= 2
-      w = 20 if w < 20
       w1 = w
       w2 = cols - total - w1
+      w1 = 20 if w1 < 20
+      w2 = 20 if w2 < 20
       @format = "%5.3f %14.14s %10s %#{w1}.#{w1}s => %#{w2}.#{w2}s\n"
     end
 
