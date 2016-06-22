@@ -64,6 +64,7 @@ module Webdrone
       cols, line = HighLine::SystemExtensions.terminal_size
       total = 6 + 15 + 11 + 5
       w = cols - total
+      w = 80 if not w
       w /= 2
       w = 20 if w < 20
       w1 = w
