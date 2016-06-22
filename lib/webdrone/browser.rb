@@ -117,6 +117,7 @@ module Webdrone
     end
 
     def console(binding = nil)
+      return unless conf.developer
       binding = Kernel.binding.of_caller(1) unless binding
       old_error = self.conf.error
       old_developer = self.conf.developer
