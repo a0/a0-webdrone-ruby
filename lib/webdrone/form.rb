@@ -73,7 +73,7 @@ module Webdrone
           worksheet.add_cell 0, coli + 1, field
         end
         worksheet.change_row_bold 0, true
-        items.sort.each_with_index do |elem, rowi|
+        items.each_with_index do |elem, rowi|
           key, item = elem
           worksheet.add_cell rowi + 1, 0, key
           heads.each_with_index do |field, coli|
