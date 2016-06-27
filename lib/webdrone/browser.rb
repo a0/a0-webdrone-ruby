@@ -50,15 +50,15 @@ module Webdrone
       end
     end
 
-    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, developer: false, logger: true, quit_at_exit: false, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_prefs: nil, firefox_profile: nil, remote_selenium: nil)
+    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout:, developer: false, logger: true, quit_at_exit: false, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_prefs: nil, firefox_profile: nil, remote_url: nil)
       env_update(Kernel.binding) if use_env
       if create_outdir or outdir
         outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
         self.conf.outdir = outdir
       end
       outdir = File.join(Dir.pwd, outdir) if outdir != nil and not Pathname.new(outdir).absolute?
-      if remote_selenium
-        @driver = Selenium::WebDriver.for :remote, url: remote, desired_capabilities: browser.to_sym
+      if remote_url
+        @driver = Selenium::WebDriver.for :remote, url: remote_url, desired_capabilities: browser.to_sym
       elsif outdir != nil and browser.to_sym == :chrome
         chrome_prefs = Browser.chrome_prefs if chrome_prefs == nil
         chrome_prefs[:download][:default_directory] = outdir
