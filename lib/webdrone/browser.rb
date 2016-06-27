@@ -44,6 +44,14 @@ module Webdrone
           end
           binding.local_variable_set(v, n)
           puts "Webdrone: overriding #{v} from '#{o}' to '#{n}'."
+        elsif v == :mark_times
+          n = ENV[env].to_i
+          puts "Webdrone: setting mark times to #{n}"
+          self.mark.default_times = n
+        elsif v == :mark_sleep
+          n = ENV[env].to_f
+          puts "Webdrone: setting mark sleep to #{n}"
+          self.mark.default_sleep = n
         else
           puts "Webdrone: ignoring unknown parameter #{env}."
         end
