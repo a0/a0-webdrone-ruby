@@ -2,7 +2,29 @@
 
 New features are summarized here.
 
-## v.1.4.2 - 2016-06-27
+
+
+## v1.4.4 - 2016-06-27
+### Added
+- New parameter `shot` in `a0.form.mark`, to work the same way as `a0.mark` commands. Before:
+```ruby
+a0.form.mark        'something'
+a0.shot.screen      'something'                 # => screenshot-XXX-something.png
+```
+
+Now you can do the same in one line:
+```ruby
+a0.form.mark        'something', shot: true     # => screenshot-XXX-something.png
+```
+
+To change the name of the screenshot, pass a String instead of true:
+```ruby
+a0.form.mark        'something', shot: 'value'  # => screenshot-XXX-value.png
+```
+
+
+
+## v1.4.2 - 2016-06-27
 ### Fixed
 - Bug in `remote_selenium`, renamed to `remote_url`.
 
@@ -71,6 +93,7 @@ end
 ```
 
 The excel will contain the following updated data:
+
 |User|alternative_email|wants_email?|
 |----|-----------------|------------|
 |fry |                 |            |
