@@ -2,16 +2,21 @@
 
 New features are summarized here.
 
+## v.1.4.2 - 2016-06-27
+### Fixed
+- Bug in `remote_selenium`, renamed to `remote_url`.
+
+
 
 ## v1.4.0 - 2016-06-27
 ### Added
 - This changelog.
-- New option `Webdrone.create` `remote\_selenium:` for remote selenium servers. Start a server with `java -jar selenium-server.jar`, grab the URL (something like `http://192.168.0.1:4444/wd/hub`), then in your script you can use:
+- New option `Webdrone.create` `remote_url:` for remote selenium servers. Start a server with `java -jar selenium-server.jar`, grab the URL (something like `http://192.168.0.1:4444/wd/hub`), then in your script you can use:
 ```ruby
-a0 = Webdrone.create timeout: 10, browser: :ie, remote_selenium: 'http://192.168.0.1:4444/wd/hub'
+a0 = Webdrone.create timeout: 10, browser: :ie, remote_url: 'http://192.168.0.1:4444/wd/hub'
 ```
 
-You can override this option by using the environment WEBDRONE\_REMOTE\_SELENIUM, as usual.
+You can override this option by using the environment WEBDRONE\_REMOTE\_URL, as usual.
 
 
 ## v1.3.6 - 2016-06-22
