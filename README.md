@@ -19,7 +19,7 @@ And then execute:
 Or install and check for updates:
 
     $ gem install webdrone
-    $ gem update webdrone
+    $ gem update webdrone selenium-webdriver
 
 ## Documentation
 
