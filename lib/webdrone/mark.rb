@@ -10,8 +10,8 @@ module Webdrone
 
     def initialize(a0)
       @a0 = a0
-      @default_times = 3
-      @default_sleep = 0.05
+      @default_times = ENV['WEBDRONE_MARK_TIMES'] || 3
+      @default_sleep = ENV['WEBDRONE_MARK_SLEEP'] || 0.05
     end
 
     def mark(text, n: 1, all: false, visible: true, color: '#af1616', times: nil, sleep: nil, shot: nil)
