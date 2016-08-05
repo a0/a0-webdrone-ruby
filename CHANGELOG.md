@@ -3,6 +3,22 @@
 New features are summarized here.
 
 
+## v1.4.6 - 2016-08-05
+### Added
+- Change a0.mark.default_times and a0.mark.default_sleep vía environment variables WEBDRONE_MARK_TIMES and WEBDRONE_MARK_SLEEP.
+```ruby
+# default is 3 times with 0.05 seconds delay between them
+a0.mark.on          'something'
+
+# manual override
+a0.mark.on          'something', times: 2, sleep: 1
+
+# environment override
+export WEBDRONE_MARK_TIMES=1
+export WEBDRONE_MARK_SLEEP=0
+a0.mark.on          'something'
+```
+
 
 ## v1.4.4 - 2016-06-27
 ### Added

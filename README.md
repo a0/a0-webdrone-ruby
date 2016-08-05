@@ -23,7 +23,8 @@ Or install and check for updates:
 
 ## Documentation
 
-* [Documentation Wiki](https://github.com/a0/a0-webdrone-ruby/wiki) (Basic installation, usage and more).
+* Know the latest and greatest features by reading the [Changelog](https://github.com/a0/a0-webdrone-ruby/blob/master/CHANGELOG.md).
+* Read or helps us to improve our [Documentation Wiki](https://github.com/a0/a0-webdrone-ruby/wiki). It contains basic installation, usage and more.
 * Docs can be found [here](http://www.rubydoc.info/gems/webdrone).
 
 ## Development
