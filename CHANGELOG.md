@@ -3,6 +3,12 @@
 New features are summarized here.
 
 
+## v1.4.8 - 2016-08-05
+### Added
+- More platform info on a0_webdrone_trace.csv file
+
+
+
 ## v1.4.6 - 2016-08-05
 ### Added
 - Change a0.mark.default_times and a0.mark.default_sleep vía environment variables WEBDRONE_MARK_TIMES and WEBDRONE_MARK_SLEEP.
@@ -18,6 +24,7 @@ export WEBDRONE_MARK_TIMES=1
 export WEBDRONE_MARK_SLEEP=0
 a0.mark.on          'something'
 ```
+
 
 
 ## v1.4.4 - 2016-06-27
