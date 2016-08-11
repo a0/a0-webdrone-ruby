@@ -82,10 +82,12 @@ module Webdrone
         hostname = Socket.gethostname
         browser_name = a0.driver.capabilities[:browser_name]
         browser_version = a0.driver.capabilities[:version]
+        browser_platform = a0.driver.capabilities[:platform]
         webdrone_version = Webdrone::VERSION
+        webdrone_platform = "#{RUBY_ENGINE}-#{RUBY_VERSION}"
 
-        csv << %w.OS ARCH HOSTNAME BROWSER\ NAME BROWSER\ VERSION WEBDRONE\ VERSION.
-        csv << [os, bits, hostname, browser_name, browser_version, webdrone_version]
+        csv << %w.OS ARCH HOSTNAME BROWSER\ NAME BROWSER\ VERSION BROWSER\ PLATFORM WEBDRONE\ VERSION WEBDRONE\ PLATFORM.
+        csv << [os, bits, hostname, browser_name, browser_version, browser_platform, webdrone_version, webdrone_platform]
       end
       CSV.open(@path, "a+") do |csv|
         csv << %w.DATE DUR FROM LINENO MODULE CALL PARAMS RESULT EXCEPTION SCREENSHOT.
