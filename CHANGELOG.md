@@ -3,7 +3,39 @@
 New features are summarized here.
 
 
-## v1.4.8 - 2016-08-05
+
+## v1.5.0 - 2016-08-11
+### Added
+- Added platform info for Webdrone (ruby) on a0_webdrone_trace.csv file
+- Added a0.logg.with_group, that generates a new entry for better error detection in the a0_webdrone_trace.csv file. Sample code:
+```ruby
+# if login group fails, the script is ended
+a0.logg.with_group 'Login', abort_error: true do
+  a0.open.url           'http://example.com'
+  a0.form.set           'user', 'foo'
+  a0.form.set           'pass', 'bar'
+  a0.mark.on            'login', shot: true
+  a0.clic.on            'login'
+end
+
+# if operation1 group fails, continue
+a0.logg.with_group 'Operation 1' do
+  a0.open.url           'http://example.com/operation'
+  a0.mark.on            'operation 1', shot: true
+  a0.clic.on            'something'
+end
+
+# if operation2 group fails, continue
+a0.logg.with_group 'Operation 2' do
+  a0.open.url           'http://example.com/operation'
+  a0.mark.on            'operation 1', shot: true
+  a0.clic.on            'something'
+end
+```
+
+
+
+## v1.4.8 - 2016-08-11
 ### Added
 - More platform info on a0_webdrone_trace.csv file
 
