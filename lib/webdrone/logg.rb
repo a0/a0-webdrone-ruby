@@ -48,6 +48,7 @@ module Webdrone
 
     def initialize(a0)
       @a0 = a0
+      @group_trace_count = []
       setup_format
       setup_trace
     end
@@ -58,6 +59,37 @@ module Webdrone
       CSV.open(@path, "a+") do |csv|
         csv << [ini.strftime('%Y-%m-%d %H:%M:%S.%L %z'), (fin-ini), from, lineno, base, method_name, args, result, exception, screenshot]
       end
+      @group_trace_count = @group_trace_count.map { |x| x + 1 }
+    end
+
+    def with_group(name, abort_error: false)
+      ini = Time.new
+      caller_location = Kernel.caller_locations[0]
+      cl_path = caller_location.path
+      cl_line = caller_location.lineno
+      result = {}
+      @group_trace_count << 0
+      exception = nil
+      begin
+        yield
+      rescue => e
+        exception = e
+        bindings = Kernel.binding.callers
+        bindings[0..-1].each_with_index do |binding, index|
+          location = { path: binding.eval('__FILE__'), lineno: binding.eval('__LINE__') }
+          if Gem.path.none? { |path| location[:path].include? path }
+            result[:exception] = {}
+            result[:exception][:line] = location[:lineno]
+            result[:exception][:path] = location[:path]
+            break
+          end
+        end        
+      end
+      result[:trace_count] = @group_trace_count.pop
+      fin = Time.new
+      trace(ini, fin, cl_path, cl_line, Logs, :with_group, [name, abort_error: abort_error], result, exception, nil)
+      puts "abort_error: #{abort_error} exception: #{exception}"
+      exit if abort_error == true and exception
     end
 
     def setup_format
