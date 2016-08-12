@@ -84,7 +84,7 @@ module Webdrone
         browser_version = a0.driver.capabilities[:version]
         browser_platform = a0.driver.capabilities[:platform]
         webdrone_version = Webdrone::VERSION
-        webdrone_platform = "#{RUBY_ENGINE}-#{RUBY_VERSION}"
+        webdrone_platform = "#{RUBY_ENGINE}-#{RUBY_VERSION} #{RUBY_PLATFORM}"
 
         csv << %w.OS ARCH HOSTNAME BROWSER\ NAME BROWSER\ VERSION BROWSER\ PLATFORM WEBDRONE\ VERSION WEBDRONE\ PLATFORM.
         csv << [os, bits, hostname, browser_name, browser_version, browser_platform, webdrone_version, webdrone_platform]
