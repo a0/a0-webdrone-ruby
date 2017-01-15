@@ -12,8 +12,13 @@ module Webdrone
       @a0 = a0
     end
 
-    def clic(text, n: 1, all: false, visible: true)
+    def clic(text, n: 1, all: false, visible: true, color: '#af1616', times: nil, delay: nil, shot: nil, mark: false)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
+      if mark
+        @a0.mark.mark_item(item, color: color, times: times, delay: delay, shot: shot, text: text)
+      elsif shot
+        @a0.shot.screen shot.is_a?(String) ? shot : text
+      end
       if item.is_a? Array
         item.each(&:click)
       else
