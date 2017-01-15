@@ -114,8 +114,8 @@ module Webdrone
       Webdrone.report_error(@a0, exception)
     end
 
-    def mark(key, n: 1, visible: true, color: '#af1616', times: nil, sleep: nil, shot: nil)
-      @a0.mark.mark_item self.find_item(key, n: n, visible: visible), color: color, times: times, sleep: sleep, shot: shot
+    def mark(key, n: 1, visible: true, color: '#af1616', times: nil, delay: nil, shot: nil)
+      @a0.mark.mark_item self.find_item(key, n: n, visible: visible), color: color, times: times, delay: delay, shot: shot
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end

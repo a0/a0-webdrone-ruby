@@ -6,17 +6,17 @@ module Webdrone
   end
 
   class Mark
-    attr_accessor :a0, :default_times, :default_sleep
+    attr_accessor :a0, :default_times, :default_delay
 
     def initialize(a0)
       @a0 = a0
       @default_times = ENV['WEBDRONE_MARK_TIMES'] || 3
-      @default_sleep = ENV['WEBDRONE_MARK_SLEEP'] || 0.05
+      @default_delay = ENV['WEBDRONE_MARK_DELAY'] || 0.05
     end
 
-    def mark(text, n: 1, all: false, visible: true, color: '#af1616', times: nil, sleep: nil, shot: nil)
+    def mark(text, n: 1, all: false, visible: true, color: '#af1616', times: nil, delay: nil, shot: nil)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
-      mark_item item, color: color, times: times, sleep: sleep, shot: shot, text: text
+      mark_item item, color: color, times: times, delay: delay, shot: shot, text: text
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
@@ -29,16 +29,16 @@ module Webdrone
     alias_method :option, :mark
     alias_method :xpath,  :mark
 
-    def mark_item(item, color: '#af1616', times: nil, sleep: nil, shot: nil, text: nil)
+    def mark_item(item, color: '#af1616', times: nil, delay: nil, shot: nil, text: nil)
       times ||= @default_times
-      sleep ||= @default_sleep
+      delay ||= @default_delay
       times.times do
         mark_item_border item, 'white'
-        sleep sleep
+        sleep delay
         mark_item_border item, 'black'
-        sleep sleep
+        sleep delay
         mark_item_border item, color
-        sleep sleep
+        sleep delay
       end
       @a0.shot.screen shot.is_a?(String) ? shot : text  if shot
       item
