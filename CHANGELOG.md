@@ -4,6 +4,47 @@ New features are summarized here.
 
 
 
+## v1.6.0 - 2017-01-15
+### Added
+- Added `mark:` an `shot:` parameters to `a0.clic`. The following code will mark the element, take a screenshot and then click the element.
+```
+a0.clic.on 'something', mark: true, shot: true
+```
+### Changed
+- Changed default to true for `quit_at_exit` in `Webdrone.create`.
+- Setting default of 30 seconds to timeout parameter in `Webdrone.create`. This means the timeout is an optional parameter, for ex:
+```ruby
+# Before
+a0 = Webdrone.create                # <= ArgumentError: missing keyword: timeout
+a0 = Webdrone.create timeout: 10    # setting timeout to 10 seconds
+
+# Now
+a0 = Webdrone.create                # default timeout of 30 seconds
+a0 = Webdrone.create timeout: 10    # overriding timeout to 10 seconds 
+```
+- Renamed `sleep` to `delay` in `a0.mark`, for example:
+```ruby
+# Before
+export WEBDRONE_MARK_TIMES=1
+export WEBDRONE_MARK_SLEEP=0
+a0.mark.on          'something'
+
+a0.mark.on          'something', times: 2, sleep: 1
+
+# Now
+export WEBDRONE_MARK_TIMES=1
+export WEBDRONE_MARK_DELAY=0
+a0.mark.on          'something'
+
+a0.mark.on          'something', times: 2, delay: 1
+```
+### Fixed
+- Firefox using geckodriver is not supporting window resizing/positioning :-(. The following error will be ignored in the meantime:
+```
+Selenium::WebDriver::Error::UnsupportedOperationError: The W3C standard does not currently support setting the Window Position" 
+```
+
+
 ## v1.5.0 - 2016-08-11
 ### Added
 - Added platform info for Webdrone (ruby) on a0_webdrone_trace.csv file
