@@ -111,8 +111,12 @@ module Webdrone
         else
           win_h ||= h
         end
-        @driver.manage.window.position= Selenium::WebDriver::Point.new win_x, win_y
-        @driver.manage.window.resize_to(win_w, win_h)
+        begin
+          @driver.manage.window.position = Selenium::WebDriver::Point.new win_x, win_y
+          @driver.manage.window.resize_to(win_w, win_h)
+        rescue => e
+          puts "Ignoring error on window position/resize: #{e}"
+        end
       else
         self.maximize if maximize
       end
