@@ -4,6 +4,12 @@ New features are summarized here.
 
 
 
+## v.1.6.2 - 2017-04-11
+### Changed
+- Changed default preferences for chrome, disabling the password save dialog.
+
+
+
 ## v1.6.0 - 2017-01-15
 ### Added
 - Added `mark:` an `shot:` parameters to `a0.clic`. The following code will mark the element, take a screenshot and then click the element.
