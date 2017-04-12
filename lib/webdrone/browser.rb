@@ -20,7 +20,7 @@ module Webdrone
 
     def self.chrome_prefs
       if @@chrome_prefs == nil
-        @@chrome_prefs = { download: { prompt_for_download: false } }
+        @@chrome_prefs = { download: { prompt_for_download: false }, credentials_enable_service: false }
       end
       @@chrome_prefs
     end
