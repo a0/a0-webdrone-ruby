@@ -4,6 +4,28 @@ New features are summarized here.
 
 
 
+## v.1.7.0 - 2017-08-14
+### Added
+- Find children elements of a parent element. For ex, given the following HTML:
+```HTML
+<div id="objects">
+  <a>Create</a>
+</div>
+<div id="properties">
+  <a>Create</a>
+</div>
+```
+```ruby
+objs = a0.find.id 'objects'
+prps = a0.find.id 'properties'
+
+# click properties link
+a0.clic.on      'Create', parent: prps
+# click objects link
+a0.clic.on      'Create', parent: objs
+```
+- parent is supported in the following verbs: `a0.clic.*`, `a0.find.*`, `a0.form.*`, `a0.html.*`, `a0.mark.*`, `a0.text.*` and `a0.vrfy.*`
+
 ## v.1.6.2 - 2017-04-11
 ### Changed
 - Changed default preferences for chrome, disabling the password save dialog.
@@ -26,7 +48,7 @@ a0 = Webdrone.create timeout: 10    # setting timeout to 10 seconds
 
 # Now
 a0 = Webdrone.create                # default timeout of 30 seconds
-a0 = Webdrone.create timeout: 10    # overriding timeout to 10 seconds 
+a0 = Webdrone.create timeout: 10    # overriding timeout to 10 seconds
 ```
 - Renamed `sleep` to `delay` in `a0.mark`, for example:
 ```ruby
@@ -47,7 +69,7 @@ a0.mark.on          'something', times: 2, delay: 1
 ### Fixed
 - Firefox using geckodriver is not supporting window resizing/positioning :-(. The following error will be ignored in the meantime:
 ```
-Selenium::WebDriver::Error::UnsupportedOperationError: The W3C standard does not currently support setting the Window Position" 
+Selenium::WebDriver::Error::UnsupportedOperationError: The W3C standard does not currently support setting the Window Position"
 ```
 
 
@@ -292,5 +314,3 @@ ruby test-script-01.rb
 - Developer mode: a console appears when an error occurs. The console has the context of your script, so you can debug them easily.
 - New option `Webdrone.create` `developer: true` to enable developer mode described above (by default is `false`).
 - Added optional parameters `n:`, `visible:` to all commands in `a0.form`: `set`, `get`, `clic`, `mark` and `submit`.
-
-
