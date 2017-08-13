@@ -27,13 +27,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "bundler", "~> 1.15"
+  spec.add_development_dependency "rake", "~> 10.5"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "ci_reporter_rspec"
   spec.add_development_dependency "parallel_tests"
   spec.add_runtime_dependency "os"
-  spec.add_runtime_dependency "selenium-webdriver"
+  spec.add_runtime_dependency "selenium-webdriver", ">= 3.5.0"
   spec.add_runtime_dependency "xpath"
   spec.add_runtime_dependency "rubyXL"
   spec.add_runtime_dependency "binding_of_caller"
