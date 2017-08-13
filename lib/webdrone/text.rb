@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def text(text, n: 1, all: false, visible: true)
-      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
+    def text(text, n: 1, all: false, visible: true, parent: nil)
+      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, parent: parent
       if item.is_a? Array
         item.collect(&:text)
       else
@@ -30,7 +30,7 @@ module Webdrone
     alias_method :on,     :text
     alias_method :option, :text
     alias_method :xpath,  :text
-    
+
     def page_title
       @a0.driver.title
     rescue => exception

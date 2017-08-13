@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def vrfy(text, n: 1, all: false, visible: true, attr: nil, eq: nil, contains: nil)
-      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible
+    def vrfy(text, n: 1, all: false, visible: true, parent: nil, attr: nil, eq: nil, contains: nil)
+      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, parent: parent
       if item.is_a? Array
         item.each { |x| vrfy_item x, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains }
       else

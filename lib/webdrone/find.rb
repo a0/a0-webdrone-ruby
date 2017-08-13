@@ -12,51 +12,51 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text, n: 1, all: false, visible: true)
+    def id(text, n: 1, all: false, visible: true, parent: nil)
       @a0.wait.for do
-        items = @a0.driver.find_elements :id, text
+        items = (parent || @a0.driver).find_elements :id, text
         choose(items, n, all, visible)
       end
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def css(text, n: 1, all: false, visible: true)
+    def css(text, n: 1, all: false, visible: true, parent: nil)
       @a0.wait.for do
-        items = @a0.driver.find_elements :css, text
+        items = (parent || @a0.driver).find_elements :css, text
         choose(items, n, all, visible)
       end
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def link(text, n: 1, all: false, visible: true)
-      self.xpath XPath::HTML.link(text).to_s, n: n, all: all, visible: visible
+    def link(text, n: 1, all: false, visible: true, parent: nil)
+      self.xpath XPath::HTML.link(text).to_s, n: n, all: all, visible: visible, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def button(text, n: 1, all: false, visible: true)
-      self.xpath XPath::HTML.button(text).to_s, n: n, all: all, visible: visible
+    def button(text, n: 1, all: false, visible: true, parent: nil)
+      self.xpath XPath::HTML.button(text).to_s, n: n, all: all, visible: visible, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def on(text, n: 1, all: false, visible: true)
-      self.xpath XPath::HTML.link_or_button(text).to_s, n: n, all: all, visible: visible
+    def on(text, n: 1, all: false, visible: true, parent: nil)
+      self.xpath XPath::HTML.link_or_button(text).to_s, n: n, all: all, visible: visible, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def option(text, n: 1, all: false, visible: true)
-      self.xpath XPath::HTML.option(text).to_s, n: n, all: all, visible: visible
+    def option(text, n: 1, all: false, visible: true, parent: nil)
+      self.xpath XPath::HTML.option(text).to_s, n: n, all: all, visible: visible, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def xpath(text, n: 1, all: false, visible: true)
+    def xpath(text, n: 1, all: false, visible: true, parent: nil)
       @a0.wait.for do
-        items = @a0.driver.find_elements :xpath, text
+        items = (parent || @a0.driver).find_elements :xpath, text
         choose(items, n, all, visible)
       end
     rescue => exception
