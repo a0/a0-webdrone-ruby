@@ -6,12 +6,13 @@ module Webdrone
   end
 
   class Mark
-    attr_accessor :a0, :default_times, :default_delay
+    attr_accessor :a0, :default_times, :default_delay, :clear
 
     def initialize(a0)
       @a0 = a0
       @default_times = ENV['WEBDRONE_MARK_TIMES'] || 3
       @default_delay = ENV['WEBDRONE_MARK_DELAY'] || 0.05
+      @clear = ENV['WEBDRONE_MARK_CLEAR'] == 'true' || false
     end
 
     def mark(text, n: 1, all: false, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
@@ -41,7 +42,7 @@ module Webdrone
         sleep delay
       end
       @a0.shot.screen shot.is_a?(String) ? shot : text  if shot
-      mark_clear item if @a0.conf.mark_clear
+      mark_clear item if @clear
       item
     end
 

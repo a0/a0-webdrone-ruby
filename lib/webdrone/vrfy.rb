@@ -12,11 +12,13 @@ module Webdrone
       @a0 = a0
     end
 
-    def vrfy(text, n: 1, all: false, visible: true, scroll: false, parent: nil, attr: nil, eq: nil, contains: nil)
+    def vrfy(text, n: 1, all: false, visible: true, scroll: false, parent: nil, attr: nil, eq: nil, contains: nil, mark: false)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       if item.is_a? Array
-        item.each { |x| vrfy_item x, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains }
+        @a0.mark.mark_item item if mark
+        item.each { |x| vrfy_item x, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains, mark: mark }
       else
+        @a0.mark.mark_item item if mark
         vrfy_item item, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains
       end
     rescue => exception

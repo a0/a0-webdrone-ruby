@@ -6,7 +6,7 @@ module Webdrone
   end
 
   class Conf
-    attr_accessor :a0, :timeout, :outdir, :error, :developer, :logger, :mark_clear
+    attr_accessor :a0, :timeout, :outdir, :error, :developer, :logger
 
     def initialize(a0)
       @a0 = a0
