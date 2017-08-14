@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def text(text, n: 1, all: false, visible: true, parent: nil)
-      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, parent: parent
+    def text(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       if item.is_a? Array
         item.collect(&:text)
       else

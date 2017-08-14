@@ -12,8 +12,8 @@ module Webdrone
       @a0 = a0
     end
 
-    def find_html(text, n: 1, all: false, visible: true, parent: nil)
-      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, parent: parent
+    def find_html(text, n: 1, all: false, visible: true, scroll: scroll, parent: nil)
+      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       if item.is_a? Array
         item.collect { |x| x.attribute 'innerHTML'}
       else

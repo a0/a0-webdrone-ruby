@@ -12,59 +12,59 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text, n: 1, all: false, visible: true, parent: nil)
+    def id(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
       @a0.wait.for do
         items = (parent || @a0.driver).find_elements :id, text
-        choose(items, n, all, visible)
+        choose(items, n, all, visible, scroll)
       end
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def css(text, n: 1, all: false, visible: true, parent: nil)
+    def css(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
       @a0.wait.for do
         items = (parent || @a0.driver).find_elements :css, text
-        choose(items, n, all, visible)
+        choose(items, n, all, visible, scroll)
       end
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def link(text, n: 1, all: false, visible: true, parent: nil)
-      self.xpath XPath::HTML.link(text).to_s, n: n, all: all, visible: visible, parent: parent
+    def link(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+      self.xpath XPath::HTML.link(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def button(text, n: 1, all: false, visible: true, parent: nil)
-      self.xpath XPath::HTML.button(text).to_s, n: n, all: all, visible: visible, parent: parent
+    def button(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+      self.xpath XPath::HTML.button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def on(text, n: 1, all: false, visible: true, parent: nil)
-      self.xpath XPath::HTML.link_or_button(text).to_s, n: n, all: all, visible: visible, parent: parent
+    def on(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+      self.xpath XPath::HTML.link_or_button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def option(text, n: 1, all: false, visible: true, parent: nil)
-      self.xpath XPath::HTML.option(text).to_s, n: n, all: all, visible: visible, parent: parent
+    def option(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+      self.xpath XPath::HTML.option(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def xpath(text, n: 1, all: false, visible: true, parent: nil)
+    def xpath(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
       @a0.wait.for do
         items = (parent || @a0.driver).find_elements :xpath, text
-        choose(items, n, all, visible)
+        choose(items, n, all, visible, scroll)
       end
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
     protected
-      def choose(list, n, all, visible)
+      def choose(list, n, all, visible, scroll)
         list = list.select do |x|
           if visible == true
             x.displayed?
@@ -74,6 +74,11 @@ module Webdrone
             true
           end
         end
+
+        if scroll and list.length > 0
+          @a0.exec.script 'arguments[0].scrollIntoView()', list.first
+        end
+
         if all
           list
         else

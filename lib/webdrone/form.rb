@@ -87,8 +87,8 @@ module Webdrone
       @data = prev
     end
 
-    def set(key, val, n: 1, visible: true, parent: nil)
-      item = self.find_item(key, n: n, visible: visible, parent: parent)
+    def set(key, val, n: 1, visible: true, scroll: false, parent: nil)
+      item = self.find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
       if item.tag_name == 'select'
         option = item.find_element :xpath, XPath::HTML.option(val).to_s
         option.click
@@ -102,26 +102,26 @@ module Webdrone
       Webdrone.report_error(@a0, exception)
     end
 
-    def get(key, n: 1, visible: true, parent: nil)
-      self.find_item(key, n: n, visible: visible, parent: parent)[:value]
+    def get(key, n: 1, visible: true, scroll: false, parent: nil)
+      self.find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)[:value]
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def clic(key, n: 1, visible: true, parent: nil)
-      self.find_item(key, n: n, visible: visible, parent: parent).click
+    def clic(key, n: 1, visible: true, scroll: false, parent: nil)
+      self.find_item(key, n: n, visible: visible, scroll: scroll, parent: parent).click
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def mark(key, n: 1, visible: true, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
-      @a0.mark.mark_item self.find_item(key, n: n, visible: visible, parent: parent), color: color, times: times, delay: delay, shot: shot
+    def mark(key, n: 1, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
+      @a0.mark.mark_item self.find_item(key, n: n, visible: visible, scroll: scroll, parent: parent), color: color, times: times, delay: delay, shot: shot
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
-    def submit(key = nil, n: 1, visible: true, parent: nil)
-      self.find_item(key, n: n, visible: visible, parent: parent) if key
+    def submit(key = nil, n: 1, visible: true, scroll: false, parent: nil)
+      self.find_item(key, n: n, visible: visible, scroll: scroll, parent: parent) if key
       @lastitem.submit
     rescue => exception
       Webdrone.report_error(@a0, exception)
@@ -136,13 +136,13 @@ module Webdrone
     end
 
     protected
-      def find_item(key, n: 1, visible: true, parent: nil)
+      def find_item(key, n: 1, visible: true, scroll: false, parent: nil)
         if @xpath.respond_to? :call
-          @lastitem = @a0.find.xpath @xpath.call(key).to_s, n: n, visible: visible, parent: parent
+          @lastitem = @a0.find.xpath @xpath.call(key).to_s, n: n, visible: visible, scroll: scroll, parent: parent
         elsif @xpath.is_a? String and @xpath.include? '%s'
-          @lastitem = @a0.find.xpath sprintf(@xpath, key), n: n, visible: visible, parent: parent
+          @lastitem = @a0.find.xpath sprintf(@xpath, key), n: n, visible: visible, scroll: scroll, parent: parent
         else
-          @lastitem = @a0.find.xpath XPath::HTML.field(key).to_s, n: n, visible: visible, parent: parent
+          @lastitem = @a0.find.xpath XPath::HTML.field(key).to_s, n: n, visible: visible, scroll: scroll, parent: parent
         end
       end
   end

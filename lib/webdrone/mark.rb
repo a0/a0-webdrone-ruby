@@ -14,8 +14,8 @@ module Webdrone
       @default_delay = ENV['WEBDRONE_MARK_DELAY'] || 0.05
     end
 
-    def mark(text, n: 1, all: false, visible: true, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
-      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, parent: parent
+    def mark(text, n: 1, all: false, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
+      item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       mark_item item, color: color, times: times, delay: delay, shot: shot, text: text
     rescue => exception
       Webdrone.report_error(@a0, exception)
