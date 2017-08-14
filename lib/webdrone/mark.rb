@@ -41,16 +41,23 @@ module Webdrone
         sleep delay
       end
       @a0.shot.screen shot.is_a?(String) ? shot : text  if shot
+      mark_clear item if @a0.conf.mark_clear
       item
     end
 
+    def mark_clear(item)
+      mark_item_border item, nil
+    end
+
     def mark_item_border(item, color)
+      style = color ? "'2px solid #{color}'" : "null"
+      set_outline = "arguments[0].style.outline = #{style}"
       if item.is_a? Array
         item.each do |item|
-          @a0.exec.script("arguments[0].style.outline = '2px solid #{color}'", item)
+          @a0.exec.script(set_outline, item)
         end
       else
-        @a0.exec.script("arguments[0].style.outline = '2px solid #{color}'", item)
+        @a0.exec.script(set_outline, item)
       end
     end
 
