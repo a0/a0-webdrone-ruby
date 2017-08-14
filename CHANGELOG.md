@@ -4,7 +4,14 @@ New features are summarized here.
 
 
 
-## v.1.7.0 - 2017-08-14
+## v.1.7.2 - 2017-08-13
+### Added
+- New option to clear the mark outline. Enable with `a0.mark.clear = true` or setting the environment variable `WEBDRONE_MARK_CLEAR` to `true`
+- Initial support to scroll element with `scroll: true`. Scrolling is supported in the following verbs: `a0.clic.*`, `a0.find.*`, `a0.form.*`, `a0.html.*`, `a0.mark.*`, `a0.text.*` and `a0.vrfy.*` (Closes: #5)
+
+
+
+## v.1.7.0 - 2017-08-13
 ### Added
 - Find children elements of a parent element. For ex, given the following HTML:
 ```HTML
@@ -25,6 +32,8 @@ a0.clic.on      'Create', parent: prps
 a0.clic.on      'Create', parent: objs
 ```
 - parent is supported in the following verbs: `a0.clic.*`, `a0.find.*`, `a0.form.*`, `a0.html.*`, `a0.mark.*`, `a0.text.*` and `a0.vrfy.*`
+
+
 
 ## v.1.6.2 - 2017-04-11
 ### Changed
