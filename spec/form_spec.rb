@@ -23,7 +23,7 @@ shared_examples "form on all browsers" do |browser|
     end
   end
 
-  it "can set many fields using with_xpath" do
+  it "can set many fields using with_xpath on #{browser}" do
     Webdrone.create browser: browser, timeout: 10, error: :raise do |a0|
       a0.open.url     'http://webdrone.io/sandbox/bootstrap'
       
@@ -32,12 +32,14 @@ shared_examples "form on all browsers" do |browser|
         set           'f2', 'Español'
         submit
       end
+      a0.wait.time 1
 
       a0.form.with_xpath do
-        set           'Label for L1', 'OK'
-        set           'L2', 'Now'
+        set           'Label for L1', 'OK', scroll: true
+        set           'L2', 'Now', scroll: true
         submit
       end
+      a0.wait.time 1
 
       a0.form.with_xpath '//th[contains(., "%s")]/following-sibling::td/input' do
         set           'Field 1', 'uno'
