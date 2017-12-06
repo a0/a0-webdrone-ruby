@@ -4,7 +4,7 @@ New features are summarized here.
 
 
 
-## v.1.7.6 - 2017-12-06
+## v.1.7.8 - 2017-12-06
 ### Added
 - new `headless` option when creating a Webdrone, currently works only for Chrome
 ```ruby
@@ -22,6 +22,9 @@ chrome_options.add_argument '--headless'
 
 a0 = Webdrone.create browser: :chrome, chrome_options: chrome_options
 ```
+
+### Fixed
+- This changelog 🙄
 
 
 
