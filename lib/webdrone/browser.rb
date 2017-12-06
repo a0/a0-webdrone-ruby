@@ -1,6 +1,6 @@
 module Webdrone
   class Browser
-    @@firefox_profile = @@chrome_prefs = nil
+    @@firefox_profile = @@chrome_options = nil
     attr_accessor :driver
 
     def self.firefox_profile
@@ -18,11 +18,13 @@ module Webdrone
       @@firefox_profile = firefox_profile
     end
 
-    def self.chrome_prefs
-      if @@chrome_prefs == nil
-        @@chrome_prefs = { download: { prompt_for_download: false }, credentials_enable_service: false }
+    def self.chrome_options
+      if @@chrome_options == nil
+        @@chrome_options = Selenium::WebDriver::Chrome::Options.new
+        @@chrome_options.add_preference 'download.prompt_for_download', false
+        @@chrome_options.add_preference 'credentials_enable_service:', false
       end
-      @@chrome_prefs
+      @@chrome_options
     end
 
     def env_update(binding)
@@ -58,7 +60,7 @@ module Webdrone
       end
     end
 
-    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout: 30, developer: false, logger: true, quit_at_exit: true, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_prefs: nil, firefox_profile: nil, remote_url: nil)
+    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout: 30, developer: false, logger: true, quit_at_exit: true, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_options: nil, firefox_profile: nil, remote_url: nil, headless: false)
       env_update(Kernel.binding) if use_env
       if create_outdir or outdir
         outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
@@ -68,9 +70,11 @@ module Webdrone
       if remote_url
         @driver = Selenium::WebDriver.for :remote, url: remote_url, desired_capabilities: browser.to_sym
       elsif outdir != nil and browser.to_sym == :chrome
-        chrome_prefs = Browser.chrome_prefs if chrome_prefs == nil
-        chrome_prefs[:download][:default_directory] = outdir
-        @driver = Selenium::WebDriver.for browser.to_sym, prefs: chrome_prefs, args: ['--disable-popup-blocking']
+        chrome_options = Browser.chrome_options if chrome_options == nil
+        chrome_options.add_preference 'download.default_directory', outdir
+        chrome_options.add_argument '--disable-popup-blocking'
+        chrome_options.add_argument '--headless' if headless
+        @driver = Selenium::WebDriver.for browser.to_sym, options: chrome_options
       elsif outdir != nil and browser.to_sym == :firefox
         firefox_profile = Browser.firefox_profile if firefox_profile == nil
         downdir = OS.windows? ? outdir.gsub("/", "\\") : outdir
