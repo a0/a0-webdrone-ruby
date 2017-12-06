@@ -16,7 +16,7 @@ module Webdrone
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       if item.is_a? Array
         @a0.mark.mark_item item if mark
-        item.each { |x| vrfy_item x, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains, mark: mark }
+        item.each { |x| vrfy_item x, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains }
       else
         @a0.mark.mark_item item if mark
         vrfy_item item, text: text, callee: __callee__, attr: attr, eq: eq, contains: contains
