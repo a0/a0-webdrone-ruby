@@ -4,6 +4,27 @@ New features are summarized here.
 
 
 
+## v.1.7.4 - 2017-12-06
+### Added
+- new `headless` option when creating a Webdrone, currently works only for Chrome
+```ruby
+a0 = Webdrone.create browser: :chrome, headless: true
+```
+
+### Changed
+- Webdrone now is using `Selenium::WebDriver::Chrome::Options` instead of old prefs hash; default options object can be retrieved at `Browser.chrome_options`.
+- The old `Browser.chrome_prefs` has been removed.
+- You can pass an Options object while creating a new Webdrone:
+```ruby
+chrome_options = Selenium::Webdrive::Chrome::Options.new
+# set options here…
+chrome_options.add_argument '--headless'
+
+a0 = Webdrone.create browser: :chrome, chrome_options: chrome_options
+```
+
+
+
 ## v.1.7.2 - 2017-08-13
 ### Added
 - New option to clear the mark outline. Enable with `a0.mark.clear = true` or setting the environment variable `WEBDRONE_MARK_CLEAR` to `true`
