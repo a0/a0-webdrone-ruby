@@ -1,0 +1,4 @@
+AllCops:
+  TargetRubyVersion: 2.5
+inherit_from:
+- .rubocop.relaxed.yml
