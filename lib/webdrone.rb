@@ -28,6 +28,7 @@ require 'webdrone/text'
 require 'webdrone/vrfy'
 require 'webdrone/html'
 require 'webdrone/logg'
+require 'webdrone/util/xpath'
 
 module Webdrone
   def self.create(*args)
