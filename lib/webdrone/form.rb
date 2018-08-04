@@ -91,7 +91,7 @@ module Webdrone
       item = self.find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
       @a0.mark.mark_item item if mark
       if item.tag_name == 'select'
-        option = item.find_element :xpath, Webdrone::Util::XPath.option(val).to_s
+        option = item.find_element :xpath, Webdrone::XPath.option(val).to_s
         option.click
       else
         item.clear
@@ -147,7 +147,7 @@ module Webdrone
         elsif @xpath.is_a? String and @xpath.include? '%s'
           @lastitem = @a0.find.xpath sprintf(@xpath, key), n: n, visible: visible, scroll: scroll, parent: parent
         else
-          @lastitem = @a0.find.xpath Webdrone::Util::XPath.field(key).to_s, n: n, visible: visible, scroll: scroll, parent: parent
+          @lastitem = @a0.find.xpath Webdrone::XPath.field(key).to_s, n: n, visible: visible, scroll: scroll, parent: parent
         end
       end
   end

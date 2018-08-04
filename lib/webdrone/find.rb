@@ -31,25 +31,25 @@ module Webdrone
     end
 
     def link(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
-      self.xpath Webdrone::Util::XPath.link(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
+      self.xpath Webdrone::XPath.link(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
     def button(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
-      self.xpath Webdrone::Util::XPath.button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
+      self.xpath Webdrone::XPath.button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
     def on(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
-      self.xpath Webdrone::Util::XPath.link_or_button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
+      self.xpath Webdrone::XPath.link_or_button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
 
     def option(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
-      self.xpath Webdrone::Util::XPath.option(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
+      self.xpath Webdrone::XPath.option(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue => exception
       Webdrone.report_error(@a0, exception)
     end
