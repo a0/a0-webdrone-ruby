@@ -93,7 +93,7 @@ module Webdrone
     end
 
     def setup_format
-      cols, line = HighLine::SystemExtensions.terminal_size
+      cols, line = HighLine.default_instance.terminal.terminal_size
       total = 6 + 15 + 11 + 5
       w = cols - total
       w /= 2
