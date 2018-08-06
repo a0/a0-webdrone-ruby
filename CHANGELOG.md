@@ -4,6 +4,14 @@ New features are summarized here.
 
 
 
+## v.1.8.0 - 2018-06-06
+### Changed
+- Upgraded to ruby 2.5.1 and gems
+- Added a copy of xpath/html locators from teamcapybara/xpath (they removed XPath::HTML)
+- Changed some attr_accessors to attr_readers, like most :a0
+
+
+
 ## v.1.7.8 - 2017-12-06
 ### Added
 - new `headless` option when creating a Webdrone, currently works only for Chrome
