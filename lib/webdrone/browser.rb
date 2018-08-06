@@ -132,7 +132,7 @@ module Webdrone
         puts "Webdrone: ignoring value '#{val_new}' for boolean parameter #{var}."
         return
       end
-      binding.local_variable_set(var, var_new)
+      binding.local_variable_set(var, val_new)
       puts "Webdrone: overriding #{var} from '#{val_old}' to '#{val_new}'."
     end
 
@@ -146,7 +146,7 @@ module Webdrone
           if bool_vars.include? var
             env_update_bool(binding, var, val_old, val_new)
           else
-            binding.local_variable_set(var, var_new)
+            binding.local_variable_set(var, val_new)
             puts "Webdrone: overriding #{var} from '#{val_old}' to '#{val_new}'."
           end
         elsif v == :mark_times
