@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def wait
@@ -6,7 +8,8 @@ module Webdrone
   end
 
   class Wait
-    attr_accessor :a0, :ignore
+    attr_accessor :ignore
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -25,14 +28,14 @@ module Webdrone
       else
         yield
       end
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
 
     def time(val)
       sleep val
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
   end
 end

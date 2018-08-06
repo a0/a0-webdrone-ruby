@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def shot
@@ -6,7 +8,7 @@ module Webdrone
   end
 
   class Shot
-    attr_accessor :a0
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -14,12 +16,12 @@ module Webdrone
 
     def screen(name)
       @counter = (@counter || 0) + 1
-      filename = sprintf "screenshot-%04d-%s.png", @counter, name
+      filename = sprintf "screenshot-%04d-#{name}.png", @counter
       filename = File.join(@a0.conf.outdir, filename)
-      $a0_webdrone_screenshot = filename
+      ::Webdrone::MethodLogger.screenshot = filename
       @a0.driver.save_screenshot filename
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
   end
 end

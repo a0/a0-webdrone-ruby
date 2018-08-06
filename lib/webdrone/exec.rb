@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def exec
@@ -6,7 +8,7 @@ module Webdrone
   end
 
   class Exec
-    attr_accessor :a0
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -14,8 +16,8 @@ module Webdrone
 
     def script(script, *more)
       @a0.driver.execute_script(script, *more)
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
   end
 end

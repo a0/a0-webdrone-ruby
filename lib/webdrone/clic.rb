@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def clic
@@ -6,7 +8,7 @@ module Webdrone
   end
 
   class Clic
-    attr_accessor :a0
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -24,8 +26,8 @@ module Webdrone
       else
         item.click
       end
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
 
     alias_method :id,     :clic

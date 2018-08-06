@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def mark
@@ -6,7 +8,8 @@ module Webdrone
   end
 
   class Mark
-    attr_accessor :a0, :default_times, :default_delay, :clear
+    attr_accessor :default_times, :default_delay, :clear
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -18,8 +21,8 @@ module Webdrone
     def mark(text, n: 1, all: false, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       mark_item item, color: color, times: times, delay: delay, shot: shot, text: text
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
 
     alias_method :id,     :mark
@@ -41,7 +44,7 @@ module Webdrone
         mark_item_border item, color
         sleep delay
       end
-      @a0.shot.screen shot.is_a?(String) ? shot : text  if shot
+      @a0.shot.screen shot.is_a?(String) ? shot : text if shot
       mark_clear item if @clear
       item
     end
@@ -54,8 +57,8 @@ module Webdrone
       style = color ? "'2px solid #{color}'" : "null"
       set_outline = "arguments[0].style.outline = #{style}"
       if item.is_a? Array
-        item.each do |item|
-          @a0.exec.script(set_outline, item)
+        item.each do |subitem|
+          @a0.exec.script(set_outline, subitem)
         end
       else
         @a0.exec.script(set_outline, item)

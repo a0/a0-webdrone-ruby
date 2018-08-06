@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   # Code from teamcapybara/xpath
   # Copyright (c) 2016 Jonas Nicklas - MIT LICENSE

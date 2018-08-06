@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'os'
 require 'selenium-webdriver'
 require 'xpath'
@@ -31,57 +33,62 @@ require 'webdrone/logg'
 require 'webdrone/xpath'
 
 module Webdrone
-  def self.create(*args)
-    a0 = Webdrone::Browser.new *args
-    if block_given?
-      begin
-        yield a0
-      rescue => exception
-        Webdrone.report_error(a0, exception)
-      ensure
-        a0.quit
+  class << self
+    attr_accessor :running_pry, :irb_setup_done
+
+    def create(*args)
+      a0 = Webdrone::Browser.new(*args)
+      if block_given?
+        begin
+          yield a0
+        rescue StandardError => error
+          Webdrone.report_error(a0, error)
+        ensure
+          a0.quit
+        end
+      else
+        a0
       end
-    else
-      a0
     end
   end
 
   def self.irb_console(binding = nil)
     puts "Webdrone: Webdrone.irb_console IS DEPRECATED, please use a0.console instead."
-    return if IRB.CurrentContext and not binding
-    binding = Kernel.binding.of_caller(1) if binding == nil
+    return if IRB.CurrentContext && !binding
+    binding ||= Kernel.binding.of_caller(1)
     IRB.start_session(binding)
   end
 
-  @@running_pry = false
+  Webdrone.running_pry = false
   def self.pry_console(binding = nil)
-    if @@running_pry
+    if Webdrone.running_pry
       puts "Webdrone: pry console already running."
     else
-      @@running_pry = true
-      binding = Kernel.binding.of_caller(1) unless binding
+      Webdrone.running_pry = true
+      binding ||= Kernel.binding.of_caller(1)
       binding.pry
-      @@running_pry = false
+      Webdrone.running_pry = false
     end
   end
 end
 
 module IRB
   def self.start_session(binding)
-    unless $a0_irb_setup_done
+    unless Webdrone.irb_setup_done
       IRB.setup(nil)
-      $a0_irb_setup_done = true
+      Webdrone.irb_setup_done = true
     end
 
     workspace = WorkSpace.new(binding)
 
-    if @CONF[:SCRIPT]
-      irb = Irb.new(workspace, @CONF[:SCRIPT])
-    else
-      irb = Irb.new(workspace)
-    end
+    irb = \
+      if @CONF[:SCRIPT]
+        Irb.new(workspace, @CONF[:SCRIPT])
+      else
+        Irb.new(workspace)
+      end
 
-    @CONF[:IRB_RC].call(irb.context) if @CONF[:IRB_RC]
+    @CONF[:IRB_RC]&.call(irb.context)
     @CONF[:MAIN_CONTEXT] = irb.context
 
     trap("SIGINT") do

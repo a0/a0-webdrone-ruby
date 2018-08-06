@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def open
@@ -6,7 +8,7 @@ module Webdrone
   end
 
   class Open
-    attr_accessor :a0
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -14,14 +16,14 @@ module Webdrone
 
     def url(url)
       @a0.driver.get url
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
 
     def reload
       @a0.driver.navigate.refresh
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
   end
 end

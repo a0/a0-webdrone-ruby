@@ -2,3 +2,7 @@ AllCops:
   TargetRubyVersion: 2.5
 inherit_from:
 - .rubocop.relaxed.yml
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+Style/AccessModifierDeclarations:
+  Enabled: false

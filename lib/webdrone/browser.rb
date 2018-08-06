@@ -1,108 +1,82 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
-    @@firefox_profile = @@chrome_options = nil
-    attr_accessor :driver
+    attr_reader :driver
 
-    def self.firefox_profile
-      if @@firefox_profile == nil
-        @@firefox_profile = Selenium::WebDriver::Firefox::Profile.new
-        @@firefox_profile['startup.homepage_welcome_url.additional'] = 'about:blank'
-        @@firefox_profile['browser.download.folderList'] = 2
-        @@firefox_profile['browser.download.manager.showWhenStarting'] = false
-        @@firefox_profile['browser.helperApps.neverAsk.saveToDisk'] = "images/jpeg, application/pdf, application/octet-stream, application/download"
+    class << self
+      attr_writer :firefox_profile, :chrome_options
+
+      def firefox_profile
+        return @firefox_profile if defined? @firefox_profile
+
+        @firefox_profile = Selenium::WebDriver::Firefox::Profile.new
+        @firefox_profile['startup.homepage_welcome_url.additional'] = 'about:blank'
+        @firefox_profile['browser.download.folderList'] = 2
+        @firefox_profile['browser.download.manager.showWhenStarting'] = false
+        @firefox_profile['browser.helperApps.neverAsk.saveToDisk'] = "images/jpeg, application/pdf, application/octet-stream, application/download"
+
+        @firefox_profile
       end
-      @@firefox_profile
-    end
 
-    def self.firefox_profile=(firefox_profile)
-      @@firefox_profile = firefox_profile
-    end
+      def chrome_options
+        return @chrome_options if defined? @chrome_options
 
-    def self.chrome_options
-      if @@chrome_options == nil
-        @@chrome_options = Selenium::WebDriver::Chrome::Options.new
-        @@chrome_options.add_preference 'download.prompt_for_download', false
-        @@chrome_options.add_preference 'credentials_enable_service:', false
-      end
-      @@chrome_options
-    end
+        @chrome_options = Selenium::WebDriver::Chrome::Options.new
+        @chrome_options.add_preference 'download.prompt_for_download', false
+        @chrome_options.add_preference 'credentials_enable_service:', false
 
-    def env_update(binding)
-      bool_vars = [:create_outdir, :developer, :quit_at_exit, :maximize]
-      ENV.keys.select { |env| env.start_with? 'WEBDRONE_' }.each do |env|
-        v = env[9..-1].downcase.to_sym
-        if binding.local_variable_defined? v
-          o = binding.local_variable_get(v)
-          n = ENV[env]
-          if bool_vars.include? v
-            if n == "true"
-              n = true
-            elsif n == "false"
-              n = false
-            else
-              puts "Webdrone: ignoring value '#{n}' for boolean parameter #{v}."
-              next
-            end
-          end
-          binding.local_variable_set(v, n)
-          puts "Webdrone: overriding #{v} from '#{o}' to '#{n}'."
-        elsif v == :mark_times
-          n = ENV[env].to_i
-          puts "Webdrone: setting mark times to #{n}"
-          self.mark.default_times = n
-        elsif v == :mark_sleep
-          n = ENV[env].to_f
-          puts "Webdrone: setting mark sleep to #{n}"
-          self.mark.default_sleep = n
-        else
-          puts "Webdrone: ignoring unknown parameter #{env}."
-        end
+        @chrome_options
       end
     end
 
     def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout: 30, developer: false, logger: true, quit_at_exit: true, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_options: nil, firefox_profile: nil, remote_url: nil, headless: false)
       env_update(Kernel.binding) if use_env
-      if create_outdir or outdir
+
+      if create_outdir || outdir
         outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
-        self.conf.outdir = outdir
+        conf.outdir = outdir
       end
-      outdir = File.join(Dir.pwd, outdir) if outdir != nil and not Pathname.new(outdir).absolute?
+      outdir = File.join(Dir.pwd, outdir) if !outdir.nil? && !Pathname.new(outdir).absolute?
+
       if remote_url
         @driver = Selenium::WebDriver.for :remote, url: remote_url, desired_capabilities: browser.to_sym
-      elsif outdir != nil and browser.to_sym == :chrome
-        chrome_options = Browser.chrome_options if chrome_options == nil
+      elsif !outdir.nil? && browser.to_sym == :chrome
+        chrome_options ||= Browser.chrome_options
         chrome_options.add_preference 'download.default_directory', outdir
         chrome_options.add_argument '--disable-popup-blocking'
         chrome_options.add_argument '--headless' if headless
         @driver = Selenium::WebDriver.for browser.to_sym, options: chrome_options
-      elsif outdir != nil and browser.to_sym == :firefox
-        firefox_profile = Browser.firefox_profile if firefox_profile == nil
-        downdir = OS.windows? ? outdir.gsub("/", "\\") : outdir
+      elsif !outdir.nil? && browser.to_sym == :firefox
+        firefox_profile ||= Browser.firefox_profile
+        downdir = OS.windows? ? outdir.tr("/", "\\") : outdir
         firefox_profile['browser.download.dir'] = downdir
         @driver = Selenium::WebDriver.for browser.to_sym, profile: firefox_profile
       else
         @driver = Selenium::WebDriver.for browser.to_sym
       end
+
       if quit_at_exit
         at_exit do
-          begin
-            @driver.quit
-          rescue
-          end
+          @driver.quit
+        rescue StandardError
+          nil
         end
       end
-      self.conf.error = error.to_sym
-      self.conf.developer = developer
-      self.conf.timeout = timeout.to_i if timeout
-      self.conf.logger = logger
-      
+
+      conf.error = error.to_sym
+      conf.developer = developer
+      conf.timeout = timeout.to_i if timeout
+      conf.logger = logger
+
       if developer
         win_x = win_y = 0
         win_w = 0.5
         win_h = 1.0
       end
-      if win_x or win_y or win_w or win_h
-        x, y, w, h = self.exec.script 'return [window.screenLeft ? window.screenLeft : window.screenX, window.screenTop ? window.screenTop : window.screenY, window.screen.availWidth, window.screen.availHeight];'
+
+      if win_x || win_y || win_w || win_h
+        x, y, w, h = exec.script 'return [window.screenLeft ? window.screenLeft : window.screenX, window.screenTop ? window.screenTop : window.screenY, window.screen.availWidth, window.screen.availHeight];'
         win_x ||= x
         win_y ||= y
         if win_w.is_a? Float
@@ -118,11 +92,11 @@ module Webdrone
         begin
           @driver.manage.window.position = Selenium::WebDriver::Point.new win_x, win_y
           @driver.manage.window.resize_to(win_w, win_h)
-        rescue => e
+        rescue StandardError => e
           puts "Ignoring error on window position/resize: #{e}"
         end
-      else
-        self.maximize if maximize
+      elsif maximize
+        self.maximize
       end
     end
 
@@ -136,16 +110,56 @@ module Webdrone
 
     def console(binding = nil)
       return unless conf.developer
-      binding = Kernel.binding.of_caller(1) unless binding
-      old_error = self.conf.error
-      old_developer = self.conf.developer
+      binding ||= Kernel.binding.of_caller(1)
+      old_error = conf.error
+      old_developer = conf.developer
       begin
-        self.conf.error = :raise
-        self.conf.developer = false
+        conf.error = :raise
+        conf.developer = false
         Webdrone.pry_console binding
       ensure
-        self.conf.error = old_error
-        self.conf.developer = old_developer
+        conf.error = old_error
+        conf.developer = old_developer
+      end
+    end
+
+    protected
+
+    def env_update_bool(binding, var, val_old, val_new)
+      if val_new == "true"
+      elsif val_new == "false"
+      else
+        puts "Webdrone: ignoring value '#{val_new}' for boolean parameter #{var}."
+        return
+      end
+      binding.local_variable_set(var, var_new)
+      puts "Webdrone: overriding #{var} from '#{val_old}' to '#{val_new}'."
+    end
+
+    def env_update(binding)
+      bool_vars = %i[create_outdir developer quit_at_exit maximize]
+      ENV.keys.select { |env| env.start_with? 'WEBDRONE_' }.each do |env|
+        var = env[9..-1].downcase.to_sym
+        if binding.local_variable_defined? var
+          val_old = binding.local_variable_get(var)
+          val_new = ENV[env]
+          if bool_vars.include? var
+            env_update_bool(binding, var, val_old, val_new)
+          else
+            binding.local_variable_set(var, var_new)
+            puts "Webdrone: overriding #{var} from '#{val_old}' to '#{val_new}'."
+          end
+        elsif v == :mark_times
+          n = ENV[env].to_i
+          puts "Webdrone: setting mark times to #{n}"
+          mark.default_times = n
+        elsif v == :mark_sleep
+          n = ENV[env].to_f
+          puts "Webdrone: setting mark sleep to #{n}"
+          mark.default_sleep = n
+        else
+          puts "Webdrone: ignoring unknown parameter #{env}."
+        end
       end
     end
   end

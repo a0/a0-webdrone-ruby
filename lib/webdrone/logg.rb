@@ -1,12 +1,18 @@
+# frozen_string_literal: true
+
 module Webdrone
   class MethodLogger < Module
-    def initialize(methods_0 = nil)
-      @methods_0 = methods_0
+    class << self
+      attr_accessor :last_time, :screenshot
+    end
+
+    def initialize(methods = nil)
+      @methods = methods
     end
 
     def included(base)
-      @methods_0 = base.instance_methods(false) if @methods_0 == nil
-      method_list = @methods_0
+      @methods ||= base.instance_methods(false)
+      method_list = @methods
       base.class_eval do
         method_list.each do |method_name|
           original_method = instance_method(method_name)
@@ -14,18 +20,17 @@ module Webdrone
             caller_location = Kernel.caller_locations[0]
             cl_path = caller_location.path
             cl_line = caller_location.lineno
-            if @a0.conf.logger and Gem.path.none? { |path| cl_path.include? path }
-              $a0_webdrone_logger_last_time = Time.new unless $a0_webdrone_logger_last_time
-              ini = $a0_webdrone_logger_last_time
-              $a0_webdrone_screenshot = nil
+            if @a0.conf.logger && Gem.path.none? { |path| cl_path.include? path }
+              ini = ::Webdrone::MethodLogger.last_time ||= Time.new
+              ::Webdrone::MethodLogger.screenshot = nil
               begin
                 result = original_method.bind(self).call(*args, &block)
-                fin = $a0_webdrone_logger_last_time = Time.new
-                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args, result, nil, $a0_webdrone_screenshot)
+                fin = ::Webdrone::MethodLogger.last_time = Time.new
+                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args, result, nil, ::Webdrone::MethodLogger.screenshot)
                 result
-              rescue => exception
-                fin = $a0_webdrone_logger_last_time = Time.new
-                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args, nil, exception, $a0_webdrone_screenshot)
+              rescue StandardError => exception
+                fin = ::Webdrone::MethodLogger.last_time = Time.new
+                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args, nil, exception, ::Webdrone::MethodLogger.screenshot)
                 raise exception
               end
             else
@@ -44,7 +49,7 @@ module Webdrone
   end
 
   class Logs
-    attr_accessor :a0
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -55,9 +60,9 @@ module Webdrone
 
     def trace(ini, fin, from, lineno, base, method_name, args, result, exception, screenshot)
       exception = "#{exception.class}: #{exception}" if exception
-      printf @format, (fin-ini), base, method_name, args, (result || exception)
+      printf @format, (fin - ini), base, method_name, args, (result || exception)
       CSV.open(@path, "a+") do |csv|
-        csv << [ini.strftime('%Y-%m-%d %H:%M:%S.%L %z'), (fin-ini), from, lineno, base, method_name, args, result, exception, screenshot]
+        csv << [ini.strftime('%Y-%m-%d %H:%M:%S.%L %z'), (fin - ini), from, lineno, base, method_name, args, result, exception, screenshot]
       end
       @group_trace_count = @group_trace_count.map { |x| x + 1 }
     end
@@ -72,28 +77,29 @@ module Webdrone
       exception = nil
       begin
         yield
-      rescue => e
+      rescue StandardError => e
         exception = e
         bindings = Kernel.binding.callers
-        bindings[0..-1].each_with_index do |binding, index|
+        bindings[0..-1].each do |binding|
           location = { path: binding.eval('__FILE__'), lineno: binding.eval('__LINE__') }
-          if Gem.path.none? { |path| location[:path].include? path }
-            result[:exception] = {}
-            result[:exception][:line] = location[:lineno]
-            result[:exception][:path] = location[:path]
-            break
-          end
-        end        
+          next unless Gem.path.none? { |path| location[:path].include? path }
+
+          result[:exception] = {}
+          result[:exception][:line] = location[:lineno]
+          result[:exception][:path] = location[:path]
+
+          break
+        end
       end
       result[:trace_count] = @group_trace_count.pop
       fin = Time.new
       trace(ini, fin, cl_path, cl_line, Logs, :with_group, [name, abort_error: abort_error], result, exception, nil)
       puts "abort_error: #{abort_error} exception: #{exception}"
-      exit if abort_error == true and exception
+      exit if abort_error == true && exception
     end
 
     def setup_format
-      cols, line = HighLine.default_instance.terminal.terminal_size
+      cols, _line = HighLine.default_instance.terminal.terminal_size
       total = 6 + 15 + 11 + 5
       w = cols - total
       w /= 2
@@ -128,54 +134,54 @@ module Webdrone
   end
 
   class Clic
-    include MethodLogger.new [:id, :css, :link, :button, :on, :option, :xpath]
+    include MethodLogger.new %i[id css link button on option xpath]
   end
 
   class Conf
-    include MethodLogger.new [:timeout=, :outdir=, :error=, :developer=, :logger=]
+    include MethodLogger.new %i[timeout= outdir= error= developer= logger=]
   end
 
   class Ctxt
-    include MethodLogger.new [:create_tab, :close_tab, :with_frame, :reset, :with_alert, :ignore_alert, :with_conf]
+    include MethodLogger.new %i[create_tab close_tab with_frame reset with_alert ignore_alert with_conf]
   end
 
   class Find
-    include MethodLogger.new [:id, :css, :link, :button, :on, :option, :xpath]
+    include MethodLogger.new %i[id css link button on option xpath]
   end
 
   class Form
-    include MethodLogger.new [:with_xpath, :save, :set, :get, :clic, :mark, :submit, :xlsx]
+    include MethodLogger.new %i[with_xpath save set get clic mark submit xlsx]
   end
 
   class Html
-    include MethodLogger.new [:id, :css, :link, :button, :on, :option, :xpath]
+    include MethodLogger.new %i[id css link button on option xpath]
   end
 
   class Mark
-    include MethodLogger.new [:id, :css, :link, :button, :on, :option, :xpath]
+    include MethodLogger.new %i[id css link button on option xpath]
   end
 
   class Open
-    include MethodLogger.new [:url, :reload]
+    include MethodLogger.new %i[url reload]
   end
 
   class Shot
-    include MethodLogger.new [:screen]
+    include MethodLogger.new %i[screen]
   end
 
   class Text
-    include MethodLogger.new [:id, :css, :link, :button, :on, :option, :xpath]
+    include MethodLogger.new %i[id css link button on option xpath]
   end
 
   class Vrfy
-    include MethodLogger.new [:id, :css, :link, :button, :on, :option, :xpath]
+    include MethodLogger.new %i[id css link button on option xpath]
   end
 
   class Wait
-    include MethodLogger.new [:for, :time]
+    include MethodLogger.new %i[for time]
   end
 
   class Xlsx
-    include MethodLogger.new [:dict, :rows, :both, :save, :reset]
+    include MethodLogger.new %i[dict rows both save reset]
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def html
@@ -6,7 +8,7 @@ module Webdrone
   end
 
   class Html
-    attr_accessor :a0
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -15,12 +17,12 @@ module Webdrone
     def find_html(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       if item.is_a? Array
-        item.collect { |x| x.attribute 'innerHTML'}
+        item.collect { |x| x.attribute 'innerHTML' }
       else
         item.attribute 'innerHTML'
       end
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
 
     alias_method :id,     :find_html

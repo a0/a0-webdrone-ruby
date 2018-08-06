@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Webdrone
   class Browser
     def text
@@ -6,7 +8,7 @@ module Webdrone
   end
 
   class Text
-    attr_accessor :a0
+    attr_reader :a0
 
     def initialize(a0)
       @a0 = a0
@@ -19,8 +21,8 @@ module Webdrone
       else
         item.text
       end
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
 
     alias_method :id,     :text
@@ -33,8 +35,8 @@ module Webdrone
 
     def page_title
       @a0.driver.title
-    rescue => exception
-      Webdrone.report_error(@a0, exception)
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
     end
 
     protected :text

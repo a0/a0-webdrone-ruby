@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Webdrone
   class WebdroneError < RuntimeError
     attr_reader :original, :a0, :binding
 
-    def initialize(msg, original = $!, a0, bindings)
+    def initialize(msg, original, a0, bindings)
       super(msg)
-      @original = original
+      @original = original || $!
       @a0 = a0
       @buffer = []
       @binding = nil
@@ -12,17 +14,18 @@ module Webdrone
 
       begin
         # find location of user error
-        bindings[0..-1].each_with_index do |binding, index|
+        bindings[0..-1].each do |binding|
           location = { path: binding.eval('__FILE__'), lineno: binding.eval('__LINE__') }
-          if Gem.path.none? { |path| location[:path].include? path }
-            @location = location
-            @binding = binding
-            break
-          end
+          next unless Gem.path.none? { |path| location[:path].include? path }
+
+          @location = location
+          @binding = binding
+          break
         end
 
         report if a0.conf.error == :raise_report
-      rescue
+      rescue StandardError
+        nil
       end
     end
 
@@ -33,11 +36,12 @@ module Webdrone
     end
 
     def write_title(title)
-      title = "#{title} " if title.length % 2 != 0
+      title = "#{title} " if title.length.odd?
       title = "== #{title} =="
       filler = "="
       length = (80 - title.length) / 2
-      title = "#{filler*length}#{title}#{filler*length}\n" if length > 1
+      filler_length = filler * length
+      title = "#{filler_length}#{title}#{filler_length}\n" if length > 1
       write_line title
     end
 
@@ -57,61 +61,58 @@ module Webdrone
     end
 
     def report_script
-      begin
-        ini, fin = [@location[:lineno] - 10 - 1, @location[:lineno] + 10 - 1]
-        ini = 0 if ini < 0
+      ini, fin = [@location[:lineno] - 10 - 1, @location[:lineno] + 10 - 1]
+      ini = 0 if ini.negative?
 
-        write_title "LOCATION OF ERROR"
-        write_line "#{@location[:path]} AT LINE #{sprintf '%3d', @location[:lineno]}"
-        File.readlines(@location[:path])[ini..fin].each_with_index do |line, index|
-          lno = index + ini + 1
-          if lno == @location[:lineno]
-            write_line sprintf "%3d ==> %s", lno, line
-          else
-            write_line sprintf "%3d     %s", lno, line
-          end
+      write_title "LOCATION OF ERROR"
+      write_line "#{@location[:path]} AT LINE #{sprintf '%3d', @location[:lineno]}"
+      File.readlines(@location[:path])[ini..fin].each_with_index do |line, index|
+        lno = index + ini + 1
+        if lno == @location[:lineno]
+          write_line sprintf "%3d ==> #{line}", lno
+        else
+          write_line sprintf "%3d     #{line}", lno
         end
-
-        dump_error_report
-      rescue
       end
+
+      dump_error_report
+    rescue StandardError
+      nil
     end
 
     def report_screenshot
+      write_title "AUTOMATIC SCREENSHOT"
       begin
-        write_title "AUTOMATIC SCREENSHOT"
-        begin
-          @a0.ctxt.with_conf error: :raise do
-            file = @a0.shot.screen 'a0_webdrone_error_report'
-            write_line "Screenshot saved succesfully filename:"
-            write_line "#{File.expand_path(file.path)}"
-          end
-        rescue => exception
-          write_line "Error Saving screenshot, exception:"
-          write_line "#{exception}"
+        @a0.ctxt.with_conf error: :raise do
+          file = @a0.shot.screen 'a0_webdrone_error_report'
+          write_line "Screenshot saved succesfully filename:"
+          write_line File.expand_path(file.path).to_s
         end
-
-        dump_error_report
-      rescue
+      rescue StandardError => error
+        write_line "Error Saving screenshot, exception:"
+        write_line error.to_s
       end
+
+      dump_error_report
+    rescue StandardError
+      nil
     end
 
     def report_exception
-      begin
-        write_title "EXCEPTION DUMP"
+      write_title "EXCEPTION DUMP"
 
-        write_line "#{@original.class}: #{@original.message}"
-        @original.backtrace_locations.each_with_index do |location, index|
-          if location.path == @location[:path] and location.lineno == @location[:lineno]
-            write_line sprintf "%02d: ==> from %s", index, location
-          else
-            write_line sprintf "%02d:     from %s", index, location
-          end
+      write_line "#{@original.class}: #{@original.message}"
+      @original.backtrace_locations.each_with_index do |location, index|
+        if location.path == @location[:path] && location.lineno == @location[:lineno]
+          write_line sprintf "%02d: ==> from #{location}", index
+        else
+          write_line sprintf "%02d:     from #{location}", index
         end
-
-        dump_error_report
-      rescue
       end
+
+      dump_error_report
+    rescue StandardError
+      nil
     end
 
     def report_os
@@ -124,7 +125,7 @@ module Webdrone
     end
 
     def report_time
-      write_title "#{Time.new}"
+      write_title Time.new.to_s
 
       dump_error_report
     end
@@ -134,13 +135,13 @@ module Webdrone
     return if a0.conf.error == :ignore
     if exception.class != WebdroneError
       exception = WebdroneError.new(exception.message, exception, a0, Kernel.binding.callers)
-      if a0.conf.developer and exception.binding
+      if a0.conf.developer && exception.binding
         exception.write_title "STARTING DEVELOPER CONSOLE ON ERROR"
         exception.dump_error_report
         a0.console exception.binding
       end
     end
 
-    raise exception if a0.conf.error == :raise or a0.conf.error == :raise_report
+    raise exception if %i[raise raise_report].include? a0.conf.error
   end
 end
