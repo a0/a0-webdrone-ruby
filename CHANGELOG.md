@@ -4,7 +4,14 @@ New features are summarized here.
 
 
 
-## v.1.8.0 - 2018-06-06
+## v.1.8.2 - 2018-08-15
+### Fixed
+- This changelog (again 🙄)
+- Overriding boolean variables from ENV didn't work well, now it is fixed.
+
+
+
+## v.1.8.0 - 2018-08-06
 ### Changed
 - Upgraded to ruby 2.5.1 and gems
 - Added a copy of xpath/html locators from teamcapybara/xpath (they removed XPath::HTML)
