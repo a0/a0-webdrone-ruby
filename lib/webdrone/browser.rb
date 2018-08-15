@@ -127,7 +127,9 @@ module Webdrone
 
     def env_update_bool(binding, var, val_old, val_new)
       if val_new == "true"
+        val_new = true
       elsif val_new == "false"
+        val_new = false
       else
         puts "Webdrone: ignoring value '#{val_new}' for boolean parameter #{var}."
         return
