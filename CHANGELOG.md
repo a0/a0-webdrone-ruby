@@ -4,6 +4,13 @@ New features are summarized here.
 
 
 
+## v.1.8.4 - 2018-09-28
+### Changed
+- Added the method `a0.form.selected?` that returns if a checkbox is checked.
+- Make the method `a0.form.find_item` public.
+
+
+
 ## v.1.8.2 - 2018-08-15
 ### Fixed
 - This changelog (again 🙄)
