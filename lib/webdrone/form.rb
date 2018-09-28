@@ -122,6 +122,14 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
+    def selected?(key, n: 1, visible: true, scroll: false, parent: nil, mark: false)
+      item = find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
+      @a0.mark.mark_item item if mark
+      item.selected?
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
+    end
+
     def mark(key, n: 1, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
       @a0.mark.mark_item find_item(key, n: n, visible: visible, scroll: scroll, parent: parent), color: color, times: times, delay: delay, shot: shot
     rescue StandardError => error
@@ -143,8 +151,6 @@ module Webdrone
     rescue StandardError => error
       Webdrone.report_error(@a0, error)
     end
-
-    protected
 
     def find_item(key, n: 1, visible: true, scroll: false, parent: nil)
       @lastitem = \
