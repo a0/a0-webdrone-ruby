@@ -4,6 +4,12 @@ New features are summarized here.
 
 
 
+## v.1.8.6 - 2018-10-04
+### Changed
+- In the method `a0.form.set`, when it's being used in a select, it will click preferably the exact text match first, if not then the first option that contains the value.
+
+
+
 ## v.1.8.4 - 2018-09-28
 ### Changed
 - Added the method `a0.form.selected?` that returns if a checkbox is checked.
