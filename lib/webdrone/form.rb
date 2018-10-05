@@ -94,7 +94,15 @@ module Webdrone
       item = find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
       @a0.mark.mark_item item if mark
       if item.tag_name == 'select'
-        option = item.find_element :xpath, Webdrone::XPath.option(val).to_s
+        options = item.find_elements :xpath, Webdrone::XPath.option(val).to_s
+        raise "option not found for value: #{val} " if options.empty?
+
+        # Take the exact match, or the first one
+        option = options.find do |elem|
+          elem.text == val
+        end
+        option ||= options.first
+
         option.click
       else
         item.clear
