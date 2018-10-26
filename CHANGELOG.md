@@ -4,6 +4,16 @@ New features are summarized here.
 
 
 
+## v.1.8.8 - 2018-10-26
+### Fixed
+- Fixing `a0.clic` wasn't taking screenshots when passed both `mark: true` and `shot: true`.
+
+### Changed
+- Added new firefox_options (firefox_profile will be removed soon).
+- Added headless support for firefox.
+
+
+
 ## v.1.8.6 - 2018-10-04
 ### Changed
 - In the method `a0.form.set`, when it's being used in a select, it will click preferably the exact text match first, if not then the first option that contains the value.
