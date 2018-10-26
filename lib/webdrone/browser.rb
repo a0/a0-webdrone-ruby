@@ -19,6 +19,14 @@ module Webdrone
         @firefox_profile
       end
 
+      def firefox_options
+        return @firefox_options if defined? @firefox_options
+
+        @firefox_options = Selenium::WebDriver::Firefox::Options.new
+
+        @firefox_options
+      end
+
       def chrome_options
         return @chrome_options if defined? @chrome_options
 
@@ -30,7 +38,7 @@ module Webdrone
       end
     end
 
-    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout: 30, developer: false, logger: true, quit_at_exit: true, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_options: nil, firefox_profile: nil, remote_url: nil, headless: false)
+    def initialize(browser: 'firefox', create_outdir: true, outdir: nil, timeout: 30, developer: false, logger: true, quit_at_exit: true, maximize: true, error: :raise_report, win_x: nil, win_y: nil, win_w: nil, win_h: nil, use_env: true, chrome_options: nil, firefox_options: nil, firefox_profile: nil, remote_url: nil, headless: false)
       env_update(Kernel.binding) if use_env
 
       if create_outdir || outdir
@@ -46,12 +54,15 @@ module Webdrone
         chrome_options.add_preference 'download.default_directory', outdir
         chrome_options.add_argument '--disable-popup-blocking'
         chrome_options.add_argument '--headless' if headless
-        @driver = Selenium::WebDriver.for browser.to_sym, options: chrome_options
+        @driver = Selenium::WebDriver.for browser.to_sym, options: chrome_options, driver_opts: { log_path: "/tmp/chromedriver.#{$$}.log", verbose: true }
       elsif !outdir.nil? && browser.to_sym == :firefox
+        firefox_options ||= Browser.firefox_options
         firefox_profile ||= Browser.firefox_profile
+
+        firefox_options.add_argument '-headless' if headless
         downdir = OS.windows? ? outdir.tr("/", "\\") : outdir
         firefox_profile['browser.download.dir'] = downdir
-        @driver = Selenium::WebDriver.for browser.to_sym, profile: firefox_profile
+        @driver = Selenium::WebDriver.for browser.to_sym, profile: firefox_profile, options: firefox_options
       else
         @driver = Selenium::WebDriver.for browser.to_sym
       end
