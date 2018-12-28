@@ -150,7 +150,7 @@ module Webdrone
     end
 
     def env_update(binding)
-      bool_vars = %i[create_outdir developer quit_at_exit maximize]
+      bool_vars = %i[create_outdir developer quit_at_exit maximize headless]
       ENV.keys.select { |env| env.start_with? 'WEBDRONE_' }.each do |env|
         var = env[9..-1].downcase.to_sym
         if binding.local_variable_defined? var
