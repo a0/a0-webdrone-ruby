@@ -4,6 +4,12 @@ New features are summarized here.
 
 
 
+## v.1.8.10 - 2018-12-28
+### Fixed
+- headless can be overriden from environment, for ex: export WEBDRONE_HEADLESS=false
+
+
+
 ## v.1.8.8 - 2018-10-26
 ### Fixed
 - Fixing `a0.clic` wasn't taking screenshots when passed both `mark: true` and `shot: true`.
