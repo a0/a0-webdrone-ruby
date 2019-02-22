@@ -4,6 +4,13 @@ New features are summarized here.
 
 
 
+## v.1.8.12 - 2019-02-22
+### Fixed
+- Fixing null terminal column size when used without a terminal, caused by highlight 2.0.1.
+- Fixing maximizing start for chrome.
+
+
+
 ## v.1.8.10 - 2018-12-28
 ### Fixed
 - headless can be overriden from environment, for ex: export WEBDRONE_HEADLESS=false
