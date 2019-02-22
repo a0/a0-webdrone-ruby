@@ -102,8 +102,8 @@ module Webdrone
       begin
         cols, _line = HighLine.default_instance.terminal.terminal_size
       rescue StandardError
-        cols = 120
       end
+      cols ||= 120
       total = 6 + 15 + 11 + 5
       w = cols - total
       w /= 2
