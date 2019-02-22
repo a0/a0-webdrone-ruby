@@ -54,6 +54,9 @@ module Webdrone
         chrome_options.add_preference 'download.default_directory', outdir
         chrome_options.add_argument '--disable-popup-blocking'
         chrome_options.add_argument '--headless' if headless
+        chrome_options.add_argument '--start-maximized' if maximize
+        maximize = false
+
         @driver = Selenium::WebDriver.for browser.to_sym, options: chrome_options, driver_opts: { log_path: "/tmp/chromedriver.#{$$}.log", verbose: true }
       elsif !outdir.nil? && browser.to_sym == :firefox
         firefox_options ||= Browser.firefox_options
