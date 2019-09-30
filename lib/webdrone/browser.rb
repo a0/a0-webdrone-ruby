@@ -59,7 +59,8 @@ module Webdrone
         chrome_options.add_argument '--start-maximized' if maximize
         maximize = false
 
-        @driver = Selenium::WebDriver.for browser.to_sym, options: chrome_options, driver_opts: { log_path: "/tmp/chromedriver.#{$$}.log", verbose: true }
+        service = Selenium::WebDriver::Service.chrome(args: { log_path: "/tmp/chromedriver.#{$PID}.log", verbose: true })
+        @driver = Selenium::WebDriver.for browser.to_sym, options: chrome_options, service: service
       elsif !outdir.nil? && browser.to_sym == :firefox
         firefox_options ||= Browser.firefox_options
         firefox_profile ||= Browser.firefox_profile
@@ -67,7 +68,8 @@ module Webdrone
         firefox_options.add_argument '-headless' if headless
         downdir = OS.windows? ? outdir.tr('/', '\\') : outdir
         firefox_profile['browser.download.dir'] = downdir
-        @driver = Selenium::WebDriver.for browser.to_sym, profile: firefox_profile, options: firefox_options
+        firefox_options.profile = firefox_profile
+        @driver = Selenium::WebDriver.for browser.to_sym, options: firefox_options
       else
         @driver = Selenium::WebDriver.for browser.to_sym
       end
