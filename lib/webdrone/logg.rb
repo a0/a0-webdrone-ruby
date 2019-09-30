@@ -101,7 +101,8 @@ module Webdrone
     def setup_format
       begin
         cols, _line = HighLine.default_instance.terminal.terminal_size
-      rescue StandardError
+      rescue StandardError => error
+        puts "ignoring error: #{error}"
       end
       cols ||= 120
       total = 6 + 15 + 11 + 5

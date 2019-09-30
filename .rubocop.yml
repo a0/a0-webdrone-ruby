@@ -6,3 +6,13 @@ Naming/UncommunicativeMethodParamName:
   Enabled: false
 Style/AccessModifierDeclarations:
   Enabled: false
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
+Metrics/BlockLength:
+  Max: 50
+Style/Attr:
+  Exclude:
+    - lib/webdrone/xpath.rb
+Lint/DuplicateMethods:
+  Exclude:
+    - lib/webdrone/xpath.rb

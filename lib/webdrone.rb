@@ -53,8 +53,9 @@ module Webdrone
   end
 
   def self.irb_console(binding = nil)
-    puts "Webdrone: Webdrone.irb_console IS DEPRECATED, please use a0.console instead."
+    puts 'Webdrone: Webdrone.irb_console IS DEPRECATED, please use a0.console instead.'
     return if IRB.CurrentContext && !binding
+
     binding ||= Kernel.binding.of_caller(1)
     IRB.start_session(binding)
   end
@@ -62,7 +63,7 @@ module Webdrone
   Webdrone.running_pry = false
   def self.pry_console(binding = nil)
     if Webdrone.running_pry
-      puts "Webdrone: pry console already running."
+      puts 'Webdrone: pry console already running.'
     else
       Webdrone.running_pry = true
       binding ||= Kernel.binding.of_caller(1)
@@ -91,7 +92,7 @@ module IRB
     @CONF[:IRB_RC]&.call(irb.context)
     @CONF[:MAIN_CONTEXT] = irb.context
 
-    trap("SIGINT") do
+    trap('SIGINT') do
       irb.signal_handle
     end
 

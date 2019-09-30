@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 shared_examples ".id on all browsers" do |browser|
@@ -12,7 +14,7 @@ shared_examples ".id on all browsers" do |browser|
 
       a0.mark.id      iii
 
-      r=a0.text.id    iii
+      r = a0.text.id  iii
       expect(r).to eq(ttt)
 
       a0.vrfy.id      iii, eq: ttt

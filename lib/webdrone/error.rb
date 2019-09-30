@@ -133,6 +133,7 @@ module Webdrone
 
   def self.report_error(a0, exception)
     return if a0.conf.error == :ignore
+
     if exception.class != WebdroneError
       exception = WebdroneError.new(exception.message, exception, a0, Kernel.binding.callers)
       if a0.conf.developer && exception.binding

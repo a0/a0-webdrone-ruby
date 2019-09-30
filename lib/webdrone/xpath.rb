@@ -27,7 +27,7 @@ module Webdrone
       locator = locator.to_s
       button = descendant(:input)[attr(:type).one_of('submit', 'reset', 'image', 'button')][attr(:id).equals(locator) | attr(:value).is(locator) | attr(:title).is(locator)]
       button += descendant(:button)[attr(:id).equals(locator) | attr(:value).is(locator) | string.n.is(locator) | attr(:title).is(locator)]
-      button += descendant(:input)[attr(:type).equals('image')][attr(:alt).is(locator)]
+      button + descendant(:input)[attr(:type).equals('image')][attr(:alt).is(locator)]
     end
 
     # Match anything returned by either {#link} or {#button}.
@@ -154,7 +154,7 @@ module Webdrone
     #   Id of the 'dd' element or text from preciding 'dt' element content
     def definition_description(locator)
       locator = locator.to_s
-      descendant(:dd)[attr(:id).equals(locator) | previous_sibling(:dt)[string.n.equals(locator)] ]
+      descendant(:dd)[attr(:id).equals(locator) | previous_sibling(:dt)[string.n.equals(locator)]]
     end
 
     protected

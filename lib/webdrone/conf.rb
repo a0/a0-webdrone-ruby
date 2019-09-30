@@ -32,7 +32,8 @@ module Webdrone
     end
 
     def error=(val)
-      raise "Invalid value '#{val}' for error" if !%i[raise_report raise ignore].include? val
+      raise "Invalid value '#{val}' for error" unless %i[raise_report raise ignore].include? val
+
       @error = val
     rescue StandardError => error
       Webdrone.report_error(@a0, error)

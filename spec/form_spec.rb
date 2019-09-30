@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 shared_examples "form on all browsers" do |browser|
@@ -10,7 +12,7 @@ shared_examples "form on all browsers" do |browser|
 
       a0.form.set     fff, ttt
 
-      r=a0.form.get   fff
+      r = a0.form.get fff
       expect(r).to eq(ttt)
 
       a0.form.mark    fff
@@ -26,7 +28,7 @@ shared_examples "form on all browsers" do |browser|
   it "can set many fields using with_xpath on #{browser}" do
     Webdrone.create browser: browser, timeout: 10, error: :raise do |a0|
       a0.open.url     'http://webdrone.io/sandbox/bootstrap'
-      
+
       a0.form.with_xpath do
         set           'Sample Placeholder', 'Sample 01'
         set           'f2', 'Español'

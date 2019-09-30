@@ -42,6 +42,7 @@ module Webdrone
       targ = "contains: [#{contains}]" if contains
 
       raise "VRFY: #{callee} [#{text}] text value [#{item.text}] does not comply #{targ}" if attr.nil?
+
       raise "VRFY: #{callee} [#{text}] attr [#{attr}] value [#{item.attribute(attr)}] does not comply #{targ}"
     end
 

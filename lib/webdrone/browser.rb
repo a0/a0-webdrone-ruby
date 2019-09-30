@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'English'
+
 module Webdrone
   class Browser
     attr_reader :driver
@@ -14,7 +16,7 @@ module Webdrone
         @firefox_profile['startup.homepage_welcome_url.additional'] = 'about:blank'
         @firefox_profile['browser.download.folderList'] = 2
         @firefox_profile['browser.download.manager.showWhenStarting'] = false
-        @firefox_profile['browser.helperApps.neverAsk.saveToDisk'] = "images/jpeg, application/pdf, application/octet-stream, application/download"
+        @firefox_profile['browser.helperApps.neverAsk.saveToDisk'] = 'images/jpeg, application/pdf, application/octet-stream, application/download'
 
         @firefox_profile
       end
@@ -42,7 +44,7 @@ module Webdrone
       env_update(Kernel.binding) if use_env
 
       if create_outdir || outdir
-        outdir ||= File.join("webdrone_output", Time.new.strftime('%Y%m%d_%H%M%S'))
+        outdir ||= File.join('webdrone_output', Time.new.strftime('%Y%m%d_%H%M%S'))
         conf.outdir = outdir
       end
       outdir = File.join(Dir.pwd, outdir) if !outdir.nil? && !Pathname.new(outdir).absolute?
@@ -63,7 +65,7 @@ module Webdrone
         firefox_profile ||= Browser.firefox_profile
 
         firefox_options.add_argument '-headless' if headless
-        downdir = OS.windows? ? outdir.tr("/", "\\") : outdir
+        downdir = OS.windows? ? outdir.tr('/', '\\') : outdir
         firefox_profile['browser.download.dir'] = downdir
         @driver = Selenium::WebDriver.for browser.to_sym, profile: firefox_profile, options: firefox_options
       else
@@ -124,6 +126,7 @@ module Webdrone
 
     def console(binding = nil)
       return unless conf.developer
+
       binding ||= Kernel.binding.of_caller(1)
       old_error = conf.error
       old_developer = conf.developer
@@ -140,9 +143,9 @@ module Webdrone
     protected
 
     def env_update_bool(binding, var, val_old, val_new)
-      if val_new == "true"
+      if val_new == 'true'
         val_new = true
-      elsif val_new == "false"
+      elsif val_new == 'false'
         val_new = false
       else
         puts "Webdrone: ignoring value '#{val_new}' for boolean parameter #{var}."
