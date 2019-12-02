@@ -2,8 +2,6 @@
 
 Yet another selenium webdriver wrapper, ruby version.
 
-There is a groovy version available, at https://github.com/a0/a0-webdrone-groovy.
-
 ## Installation
 
 Add this line to your application's Gemfile:
