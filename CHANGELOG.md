@@ -4,6 +4,56 @@ New features are summarized here.
 
 
 
+## v.1.12.0 - 2019-12-04
+### Added
+- Added a new a0.conf.parent option, so instead of setting `parent:` in every method like:
+```ruby
+modal = a0.find.css '.modal-dialog'
+
+a0.form.set 'field', 'value', parent: modal
+a0.clic.on 'button', parent: modal
+```
+you can setup a default parent from now on with `a0.conf.parent=` like:
+```ruby
+a0.conf.parent = a0.find.css '.modal-dialog'
+
+a0.form.set 'field', 'value' # uses a0.conf.parent as default parent
+a0.clic.on 'button'
+
+a0.conf.parent = nil # resets default parent
+```
+- Added the following methods to `a0.ctxt`:
+  - `a0.ctxt.id`
+  - `a0.ctxt.css`
+  - `a0.ctxt.link`
+  - `a0.ctxt.button`
+  - `a0.ctxt.on`
+  - `a0.ctxt.option`
+  - `a0.ctxt.xpath`
+
+So instead of code like the above, we can use give a block of code to automatically switch in a stack of parents like:
+```ruby
+a0.ctxt.css '.modal-dialog' do
+  # sets a0.conf.parent = the found .modal-dialog
+  a0.form.set 'field', 'value'
+  a0.clic.on 'button'
+
+  a0.ctxt.css '.modal-footer' do
+    # sets a0.conf.parent to the found .modal-footer within the previous .modal-dialog
+  end
+  # sets a0.conf.parent back to the found .modal-dialog
+end
+# sets a0.conf.parent back to nil (the default) or whatever it was before calling a0.ctxt.css
+```
+
+
+
+## v.1.10.0
+### Fixed
+- Warnings for chrome and firefox
+
+
+
 ## v.1.8.12 - 2019-02-22
 ### Fixed
 - Fixing null terminal column size when used without a terminal, caused by highlight 2.0.1.
