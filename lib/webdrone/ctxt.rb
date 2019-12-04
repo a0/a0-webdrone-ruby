@@ -90,7 +90,7 @@ module Webdrone
       @a0.mark.mark_item(item, color: color, times: times, delay: delay, shot: shot, text: text) if mark
       @a0.shot.screen shot.is_a?(String) ? shot : text if shot
 
-      @parent_stack << item
+      @parent_stack << @a0.conf.parent
       @a0.conf.parent = item
 
       if block_given?
@@ -105,8 +105,7 @@ module Webdrone
     end
 
     def parent_pop
-      @parent_stack.pop
-      @a0.conf.parent = @parent_stack.last
+      @a0.conf.parent = @parent_stack.pop
     end
 
     alias_method :id,     :ctxt
