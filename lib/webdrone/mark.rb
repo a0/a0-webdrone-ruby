@@ -18,7 +18,7 @@ module Webdrone
       @clear = ENV['WEBDRONE_MARK_CLEAR'] == 'true' || false
     end
 
-    def mark(text, n: 1, all: false, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
+    def mark(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent, color: '#af1616', times: nil, delay: nil, shot: nil)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       mark_item item, color: color, times: times, delay: delay, shot: shot, text: text
     rescue StandardError => error

@@ -14,7 +14,7 @@ module Webdrone
       @a0 = a0
     end
 
-    def vrfy(text, n: 1, all: false, visible: true, scroll: false, parent: nil, attr: nil, eq: nil, contains: nil, mark: false)
+    def vrfy(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent, attr: nil, eq: nil, contains: nil, mark: false)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       @a0.mark.mark_item item if mark
       if item.is_a? Array

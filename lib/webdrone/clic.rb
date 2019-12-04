@@ -14,7 +14,7 @@ module Webdrone
       @a0 = a0
     end
 
-    def clic(text, n: 1, all: false, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil, mark: false)
+    def clic(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent, color: '#af1616', times: nil, delay: nil, shot: nil, mark: false)
       item = @a0.find.send __callee__, text, n: n, all: all, visible: visible, scroll: scroll, parent: parent
       @a0.mark.mark_item(item, color: color, times: times, delay: delay, shot: shot, text: text) if mark
       @a0.shot.screen shot.is_a?(String) ? shot : text if shot

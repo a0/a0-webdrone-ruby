@@ -90,7 +90,7 @@ module Webdrone
       @data = prev
     end
 
-    def set(key, val, n: 1, visible: true, scroll: false, parent: nil, mark: false)
+    def set(key, val, n: 1, visible: true, scroll: false, parent: a0.conf.parent, mark: false)
       item = find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
       @a0.mark.mark_item item if mark
       if item.tag_name == 'select'
@@ -114,7 +114,7 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
-    def get(key, n: 1, visible: true, scroll: false, parent: nil, mark: false)
+    def get(key, n: 1, visible: true, scroll: false, parent: a0.conf.parent, mark: false)
       item = find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
       @a0.mark.mark_item item if mark
       item[:value]
@@ -122,7 +122,7 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
-    def clic(key, n: 1, visible: true, scroll: false, parent: nil, mark: false)
+    def clic(key, n: 1, visible: true, scroll: false, parent: a0.conf.parent, mark: false)
       item = find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
       @a0.mark.mark_item item if mark
       item.click
@@ -130,7 +130,7 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
-    def selected?(key, n: 1, visible: true, scroll: false, parent: nil, mark: false)
+    def selected?(key, n: 1, visible: true, scroll: false, parent: a0.conf.parent, mark: false)
       item = find_item(key, n: n, visible: visible, scroll: scroll, parent: parent)
       @a0.mark.mark_item item if mark
       item.selected?
@@ -138,13 +138,13 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
-    def mark(key, n: 1, visible: true, scroll: false, parent: nil, color: '#af1616', times: nil, delay: nil, shot: nil)
+    def mark(key, n: 1, visible: true, scroll: false, parent: a0.conf.parent, color: '#af1616', times: nil, delay: nil, shot: nil)
       @a0.mark.mark_item find_item(key, n: n, visible: visible, scroll: scroll, parent: parent), color: color, times: times, delay: delay, shot: shot
     rescue StandardError => error
       Webdrone.report_error(@a0, error)
     end
 
-    def submit(key = nil, n: 1, visible: true, scroll: false, parent: nil, mark: false)
+    def submit(key = nil, n: 1, visible: true, scroll: false, parent: a0.conf.parent, mark: false)
       item = find_item(key, n: n, visible: visible, scroll: scroll, parent: parent) if key
       @a0.mark.mark_item item if mark
       @lastitem.submit
@@ -160,7 +160,7 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
-    def find_item(key, n: 1, visible: true, scroll: false, parent: nil)
+    def find_item(key, n: 1, visible: true, scroll: false, parent: a0.conf.parent)
       @lastitem = \
         if @xpath.respond_to? :call
           @a0.find.xpath @xpath.call(key).to_s, n: n, visible: visible, scroll: scroll, parent: parent

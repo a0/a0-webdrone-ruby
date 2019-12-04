@@ -14,7 +14,7 @@ module Webdrone
       @a0 = a0
     end
 
-    def id(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+    def id(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent)
       @a0.wait.for do
         items = (parent || @a0.driver).find_elements :id, text
         choose(items, n, all, visible, scroll)
@@ -23,7 +23,7 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
-    def css(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+    def css(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent)
       @a0.wait.for do
         items = (parent || @a0.driver).find_elements :css, text
         choose(items, n, all, visible, scroll)
@@ -32,31 +32,31 @@ module Webdrone
       Webdrone.report_error(@a0, error)
     end
 
-    def link(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+    def link(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent)
       xpath Webdrone::XPath.link(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue StandardError => error
       Webdrone.report_error(@a0, error)
     end
 
-    def button(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+    def button(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent)
       xpath Webdrone::XPath.button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue StandardError => error
       Webdrone.report_error(@a0, error)
     end
 
-    def on(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+    def on(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent)
       xpath Webdrone::XPath.link_or_button(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue StandardError => error
       Webdrone.report_error(@a0, error)
     end
 
-    def option(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+    def option(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent)
       xpath Webdrone::XPath.option(text).to_s, n: n, all: all, visible: visible, scroll: scroll, parent: parent
     rescue StandardError => error
       Webdrone.report_error(@a0, error)
     end
 
-    def xpath(text, n: 1, all: false, visible: true, scroll: false, parent: nil)
+    def xpath(text, n: 1, all: false, visible: true, scroll: false, parent: a0.conf.parent)
       @a0.wait.for do
         items = (parent || @a0.driver).find_elements :xpath, text
         choose(items, n, all, visible, scroll)

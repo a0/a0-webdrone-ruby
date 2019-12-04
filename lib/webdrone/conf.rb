@@ -8,7 +8,7 @@ module Webdrone
   end
 
   class Conf
-    attr_accessor :developer, :logger
+    attr_accessor :developer, :logger, :parent
     attr_reader :a0, :timeout, :outdir, :error
 
     def initialize(a0)

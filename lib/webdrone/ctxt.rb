@@ -13,6 +13,7 @@ module Webdrone
     def initialize(a0)
       @a0 = a0
       @framestack = []
+      @parent_stack = []
     end
 
     def create_tab
@@ -83,5 +84,39 @@ module Webdrone
         @a0.conf.send "#{k}=", v
       end
     end
+
+    def ctxt(text, n: 1, visible: true, scroll: false, parent: @a0.conf.parent, color: '#3db116', times: nil, delay: nil, shot: nil, mark: true)
+      item = @a0.find.send __callee__, text, n: n, all: false, visible: visible, scroll: scroll, parent: parent
+      @a0.mark.mark_item(item, color: color, times: times, delay: delay, shot: shot, text: text) if mark
+      @a0.shot.screen shot.is_a?(String) ? shot : text if shot
+
+      @parent_stack << item
+      @a0.conf.parent = item
+
+      if block_given?
+        begin
+          yield
+        ensure
+          parent_pop
+        end
+      end
+    rescue StandardError => error
+      Webdrone.report_error(@a0, error)
+    end
+
+    def parent_pop
+      @parent_stack.pop
+      @a0.conf.parent = @parent_stack.last
+    end
+
+    alias_method :id,     :ctxt
+    alias_method :css,    :ctxt
+    alias_method :link,   :ctxt
+    alias_method :button, :ctxt
+    alias_method :on,     :ctxt
+    alias_method :option, :ctxt
+    alias_method :xpath,  :ctxt
+
+    protected :ctxt
   end
 end
