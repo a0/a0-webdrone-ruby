@@ -1,8 +1,8 @@
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.6
 inherit_from:
 - .rubocop.relaxed.yml
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 Style/AccessModifierDeclarations:
   Enabled: false

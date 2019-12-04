@@ -65,7 +65,7 @@ module Webdrone
       ini = 0 if ini.negative?
 
       write_title "LOCATION OF ERROR"
-      write_line "#{@location[:path]} AT LINE #{sprintf '%3d', @location[:lineno]}"
+      write_line "#{@location[:path]} AT LINE #{sprintf '%<location>3d', location: @location[:lineno]}"
       File.readlines(@location[:path])[ini..fin].each_with_index do |line, index|
         lno = index + ini + 1
         if lno == @location[:lineno]
