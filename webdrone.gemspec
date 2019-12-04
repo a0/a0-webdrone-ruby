@@ -32,7 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'solargraph'
 
   spec.add_runtime_dependency 'binding_of_caller'
   spec.add_runtime_dependency 'highline', '>= 2.0.0'
