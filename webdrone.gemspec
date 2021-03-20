@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'highline', '>= 2.0.0'
   spec.add_runtime_dependency 'os'
   spec.add_runtime_dependency 'pry'
+  spec.add_runtime_dependency 'rspec'
   spec.add_runtime_dependency 'rubyXL'
   spec.add_runtime_dependency 'selenium-webdriver', '>= 3.5.0'
   spec.add_runtime_dependency 'xpath'
