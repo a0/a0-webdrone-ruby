@@ -136,7 +136,7 @@ module Webdrone
 
     if exception.class != WebdroneError
       exception = WebdroneError.new(exception.message, exception, a0, Kernel.binding.callers)
-      if a0.conf.developer && exception.binding
+      if a0.conf.developer && exception.binding && %i[raise_report].include?(a0.conf.error)
         exception.write_title "STARTING DEVELOPER CONSOLE ON ERROR"
         exception.dump_error_report
         a0.console exception.binding

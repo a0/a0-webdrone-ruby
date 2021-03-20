@@ -4,7 +4,13 @@ New features are summarized here.
 
 
 
-## v.1.12.2 - 2021-03-19
+## v.1.16.0 - 2021-03-19
+### Changed
+- Webdrone will not start a developer console when an exception is raised an a0.conf.error is set to :raise, only when it is set to :raise_report
+
+
+
+## v.1.14.0 - 2021-03-19
 ### Changed
 - New option for logger: :quiet that supress the normal stdout log, but not the log sent to webdrone_output dir.
 ```ruby
