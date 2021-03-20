@@ -60,7 +60,7 @@ module Webdrone
 
     def trace(ini, fin, from, lineno, base, method_name, args, result, exception, screenshot)
       exception = "#{exception.class}: #{exception}" if exception
-      printf @format, (fin - ini), base, method_name, args, (result || exception)
+      printf @format, (fin - ini), base, method_name, args, (result || exception) unless a0.conf.logger.to_s == 'quiet'
       CSV.open(@path, "a+") do |csv|
         csv << [ini.strftime('%Y-%m-%d %H:%M:%S.%L %z'), (fin - ini), from, lineno, base, method_name, args, result, exception, screenshot]
       end

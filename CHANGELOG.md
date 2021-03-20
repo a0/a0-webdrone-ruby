@@ -4,6 +4,15 @@ New features are summarized here.
 
 
 
+## v.1.12.2 - 2021-03-19
+### Changed
+- New option for logger: :quiet that supress the normal stdout log, but not the log sent to webdrone_output dir.
+```ruby
+a0 = Webdrone.create logger: :quiet
+```
+
+
+
 ## v.1.12.0 - 2019-12-04
 ### Added
 - Added a new a0.conf.parent option, so instead of setting `parent:` in every method like:
