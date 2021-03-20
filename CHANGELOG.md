@@ -4,6 +4,12 @@ New features are summarized here.
 
 
 
+## v.1.16.2 - 2021-03-19
+### Fixed
+- Remove rspec from runtime_dependencies.
+
+
+
 ## v.1.16.0 - 2021-03-19
 ### Changed
 - Webdrone will not start a developer console when an exception is raised an a0.conf.error is set to :raise, only when it is set to :raise_report
