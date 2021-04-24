@@ -58,8 +58,7 @@ module Webdrone
     def field(locator)
       locator = locator.to_s
       xpath = descendant(:input, :textarea, :select)[~attr(:type).one_of('submit', 'image', 'hidden')]
-      xpath = locate_field(xpath, locator)
-      xpath
+      locate_field(xpath, locator)
     end
 
     # Match any `input` or `textarea` element that can be filled with text.
@@ -72,8 +71,7 @@ module Webdrone
     def fillable_field(locator)
       locator = locator.to_s
       xpath = descendant(:input, :textarea)[~attr(:type).one_of('submit', 'image', 'radio', 'checkbox', 'hidden', 'file')]
-      xpath = locate_field(xpath, locator)
-      xpath
+      locate_field(xpath, locator)
     end
 
     # Match any `select` element.

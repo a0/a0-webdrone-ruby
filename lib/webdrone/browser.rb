@@ -145,9 +145,10 @@ module Webdrone
     protected
 
     def env_update_bool(binding, var, val_old, val_new)
-      if val_new == 'true'
+      case val_new
+      when 'true'
         val_new = true
-      elsif val_new == 'false'
+      when 'false'
         val_new = false
       else
         puts "Webdrone: ignoring value '#{val_new}' for boolean parameter #{var}."
@@ -160,7 +161,7 @@ module Webdrone
     def env_update(binding)
       bool_vars = %i[create_outdir developer quit_at_exit maximize headless]
       ENV.keys.select { |env| env.start_with? 'WEBDRONE_' }.each do |env|
-        var = env[9..-1].downcase.to_sym
+        var = env[9..].downcase.to_sym
         if binding.local_variable_defined? var
           val_old = binding.local_variable_get(var)
           val_new = ENV[env]

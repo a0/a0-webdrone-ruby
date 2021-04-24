@@ -80,8 +80,8 @@ module Webdrone
       rescue StandardError => e
         exception = e
         bindings = Kernel.binding.callers
-        bindings[0..-1].each do |binding|
-          location = { path: binding.eval('__FILE__'), lineno: binding.eval('__LINE__') }
+        bindings[0..].each do |binding|
+          location = { path: binding.source_location[0], lineno: binding.source_location[1] }
           next unless Gem.path.none? { |path| location[:path].include? path }
 
           result[:exception] = {}
@@ -93,7 +93,7 @@ module Webdrone
       end
       result[:trace_count] = @group_trace_count.pop
       fin = Time.new
-      trace(ini, fin, cl_path, cl_line, Logs, :with_group, [name, abort_error: abort_error], result, exception, nil)
+      trace(ini, fin, cl_path, cl_line, Logs, :with_group, [name, { abort_error: abort_error }], result, exception, nil)
       puts "abort_error: #{abort_error} exception: #{exception}"
       exit if abort_error == true && exception
     end

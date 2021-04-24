@@ -14,8 +14,8 @@ module Webdrone
 
       begin
         # find location of user error
-        bindings[0..-1].each do |binding|
-          location = { path: binding.eval('__FILE__'), lineno: binding.eval('__LINE__') }
+        bindings[0..].each do |binding|
+          location = { path: binding.source_location[0], lineno: binding.source_location[1] }
           next unless Gem.path.none? { |path| location[:path].include? path }
 
           @location = location

@@ -20,11 +20,9 @@ module Webdrone
       @ignore << Selenium::WebDriver::Error::InvalidSelectorError
     end
 
-    def for
+    def for(&block)
       if @a0.conf.timeout
-        Selenium::WebDriver::Wait.new(timeout: @a0.conf.timeout, ignore: @ignore).until do
-          yield
-        end
+        Selenium::WebDriver::Wait.new(timeout: @a0.conf.timeout, ignore: @ignore).until(&block)
       else
         yield
       end

@@ -69,9 +69,10 @@ module Webdrone
 
     def choose(list, n, all, visible, scroll)
       list = list.select do |x|
-        if visible == true
+        case visible
+        when true
           x.displayed?
-        elsif visible == false
+        when false
           !x.displayed?
         else
           true
