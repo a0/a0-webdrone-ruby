@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Webdrone
-  VERSION = '1.16.2'
+  VERSION = '1.18.0'
 end
