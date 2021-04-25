@@ -7,6 +7,8 @@ module Webdrone
     end
 
     def initialize(methods = nil)
+      super()
+
       @methods = methods
     end
 
@@ -16,25 +18,26 @@ module Webdrone
       base.class_eval do
         method_list.each do |method_name|
           original_method = instance_method(method_name)
-          define_method method_name do |*args, &block|
+          define_method method_name do |*args, **kwargs, &block|
             caller_location = Kernel.caller_locations[0]
             cl_path = caller_location.path
             cl_line = caller_location.lineno
             if @a0.conf.logger && Gem.path.none? { |path| cl_path.include? path }
               ini = ::Webdrone::MethodLogger.last_time ||= Time.new
               ::Webdrone::MethodLogger.screenshot = nil
+              args_log = [args, kwargs].compact.reject(&:empty?).map(&:to_s).join(' ')
               begin
-                result = original_method.bind(self).call(*args, &block)
+                result = original_method.bind(self).call(*args, **kwargs, &block)
                 fin = ::Webdrone::MethodLogger.last_time = Time.new
-                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args, result, nil, ::Webdrone::MethodLogger.screenshot)
+                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args_log, result, nil, ::Webdrone::MethodLogger.screenshot)
                 result
               rescue StandardError => exception
                 fin = ::Webdrone::MethodLogger.last_time = Time.new
-                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args, nil, exception, ::Webdrone::MethodLogger.screenshot)
+                @a0.logs.trace(ini, fin, cl_path, cl_line, base, method_name, args_log, nil, exception, ::Webdrone::MethodLogger.screenshot)
                 raise exception
               end
             else
-              original_method.bind(self).call(*args, &block)
+              original_method.bind(self).call(*args, **kwargs, &block)
             end
           end
         end

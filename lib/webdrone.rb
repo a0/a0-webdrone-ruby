@@ -36,8 +36,8 @@ module Webdrone
   class << self
     attr_accessor :running_pry, :irb_setup_done
 
-    def create(*args)
-      a0 = Webdrone::Browser.new(*args)
+    def create(*args, **kwargs)
+      a0 = Webdrone::Browser.new(*args, **kwargs)
       if block_given?
         begin
           yield a0
