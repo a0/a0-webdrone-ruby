@@ -4,6 +4,13 @@ New features are summarized here.
 
 
 
+## v.1.18.0 - 2021-04-24
+### Changed
+- Minimum Ruby version supported is now >= 2.6
+- Added support to Ruby version 3.0
+
+
+
 ## v.1.16.2 - 2021-03-19
 ### Fixed
 - Remove rspec from runtime_dependencies.
