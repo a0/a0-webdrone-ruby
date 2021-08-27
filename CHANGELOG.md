@@ -4,6 +4,12 @@ New features are summarized here.
 
 
 
+## v.1.18.2 - 2021-08-26
+### Fixed
+- Getting back support for ruby 2.6
+
+
+
 ## v.1.18.0 - 2021-04-24
 ### Changed
 - Minimum Ruby version supported is now >= 2.6
